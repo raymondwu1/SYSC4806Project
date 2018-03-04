@@ -1,3 +1,5 @@
+package com;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,11 @@ public class User {
     private int id;
 
     private String email;
+    private String firstName;
+    private String lastName;
     private String password;
+    private String confirmPassword;
+
     @OneToMany
     private List<Subscription> subscriptions;
 
@@ -67,6 +73,10 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getConfirmPassword(){return confirmPassword;}
+
+    public void setConfirmPassword(String confirmPassword) {this.confirmPassword=confirmPassword;}
 
     public List<Subscription> getSubscriptions() {
         return subscriptions;

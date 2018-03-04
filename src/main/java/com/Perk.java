@@ -3,6 +3,8 @@
 *
 * */
 
+package com;
+
 import java.util.Date;
 import javax.persistence.*;
 

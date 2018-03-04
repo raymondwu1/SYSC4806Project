@@ -3,6 +3,7 @@
 * that holds available perks
 *
 * */
+package com;
 
 import javax.persistence.*;
 import java.util.ArrayList;

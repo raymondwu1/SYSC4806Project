@@ -1,5 +1,8 @@
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
+import com.Perk;
+import com.User;
+import com.Subscription;
 /**
  * Test the User, Subscription and perk classes.
  *
