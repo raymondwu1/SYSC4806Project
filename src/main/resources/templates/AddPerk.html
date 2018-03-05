@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Creating A New Perk</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+        <h1>Upload New Perk</h1>
+        <form action="#" th:action="@{/Perk}" th:object="${perk}" method="post">
+            <p>id: <input type="number" th:field="*{id}" /></p>
+            <p>Name: <input type="text" th:field="*{name}" /></p>
+            <p>Description: <input type="text" th:field="*{description}" /></p>
+            <p>Expiry Date: <input type="date" th:field="*{expiry_date}" /></p>
+            <p><input type="submit" value="Create Perk" /> <input type="reset" value="Cancel" /></p>
+        </form>
+</body>
+</html>
