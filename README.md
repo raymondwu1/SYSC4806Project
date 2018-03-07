@@ -5,7 +5,7 @@
 ````
 Daniel Hogan 100929795
 Raymond Wu 100938326
-John Soluzochukwu
+John Soluzochukwu Nwakpadolu 100987902
 Omar Ibrahim 100943448
 ````
  
