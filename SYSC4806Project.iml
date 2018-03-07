@@ -62,6 +62,7 @@
     <orderEntry type="library" name="org.thymeleaf.extras:thymeleaf-extras-springsecurity4:Release" level="project" />
     <orderEntry type="library" name="org.thymeleaf:thymeleaf-spring3:Release" level="project" />
     <orderEntry type="library" name="org.thymeleaf:thymeleaf-spring4:Release" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-all:1.8.4" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet:javax.servlet-api:3.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-rest:1.5.10.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter:1.5.10.RELEASE" level="project" />
