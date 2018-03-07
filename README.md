@@ -21,9 +21,9 @@ The objective of the project is to create a web application for a perk manager s
  
 ## Project Milestone 2 Goals
  - A user can remove a subscription and have the table dynamically be updated
- - A user or user without a profile can search for perks based on increasing/decreasing amount of votes or proximity to expiry date
- - 
- 
+ - A user can upvote or downvote a perk
+ - A user or user without a profile can search for perks based on increasing/decreasing amount of votes
+ - A user can search for perks based on proximity to expiry date
  
 ## Scrum
 Dan
