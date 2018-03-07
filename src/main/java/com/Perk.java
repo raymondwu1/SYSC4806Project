@@ -15,14 +15,16 @@ public class Perk {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
-    private String Description;
+    private String description;
+    @ManyToOne
+    private Subscription subscription;
     private java.util.Date expiryDate;
 
     /* Constructors */
-    public Perk(String name, String Description, java.util.Date expiryDate)
+    public Perk(String name, String description, java.util.Date expiryDate)
     {
         this.name = name;
-        this.Description = Description;
+        this.description = description;
         this.expiryDate = expiryDate;
     }
 
@@ -55,11 +57,11 @@ public class Perk {
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        description = description;
     }
 
     public Date getExpiryDate() {
@@ -69,4 +71,8 @@ public class Perk {
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
+
+    public Subscription getSubscription(){return subscription;}
+
+    public void setSubscription(Subscription subscription){this.subscription=subscription;}
 }

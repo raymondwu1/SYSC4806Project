@@ -12,11 +12,10 @@ import java.util.List;
 @Entity
 public class Subscription {
     /* Subscription fields */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
     @OneToMany(fetch = FetchType.EAGER)
     private List<Perk> perks;
+    @Id
+    @Column(unique=true)
     private String name;
     private String fee;
     private static final String FREE = "FREE";
@@ -53,13 +52,6 @@ public class Subscription {
     }
 
     /* Getters & Setters */
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public List<Perk> getPerks() {
         return perks;
@@ -83,6 +75,29 @@ public class Subscription {
 
     public void setFee(String fee) {
         this.fee = fee;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (o == null) {
+            return false;
+        }
+        if (o == this) {
+            return true;
+        }
+        if(!(o instanceof Subscription)) {
+            return false;
+        }
+        Subscription s = (Subscription) o;
+        if (this.name != s.name){
+            return false;
+        }
+        if (this.fee != s.fee) {
+            return false;
+        }
+        if (!this.perks.containsAll(s.getPerks()))
+            return false;
+        return true;
     }
 
 

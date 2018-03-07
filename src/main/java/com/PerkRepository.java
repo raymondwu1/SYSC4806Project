@@ -7,4 +7,6 @@ import java.util.List;
 
 @RepositoryRestResource(collectionResourceRel = "Perk", path = "Perk")
 public interface PerkRepository extends PagingAndSortingRepository<Perk, Long> {
+    Perk findByName(String name);
+    boolean existsByName(String name);
 }

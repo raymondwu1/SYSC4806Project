@@ -13,7 +13,7 @@ public class EntitiesTest {
     private Perk perk;
     private Subscription sub;
 
-    private String email = "Test@Test.com";
+    private String username = "Test";
     private String pass = "pass";
     private String namePerk = "half off test";
     private String description = "This is a test";
@@ -22,7 +22,7 @@ public class EntitiesTest {
 
     public void init()
     {
-        user = new User(email,pass);
+        user = new User(username,pass);
         perk = new Perk(namePerk, description);
         sub = new Subscription(nameSub,fee);
     }
@@ -50,7 +50,7 @@ public class EntitiesTest {
     {
         init();
 
-        assertThat(user.getEmail().equals(email));
+        assertThat(user.getUsername().equals(username));
         assertThat(user.getPassword().equals(pass));
     }
 
