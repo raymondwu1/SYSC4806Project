@@ -11,5 +11,8 @@ import java.util.List;
 @Repository("UserRepository")
 public interface UserRepository extends CrudRepository<User, Long> {
     User findByEmail(String email);
+    User findByUsername(String username);
+    boolean existsByUsername(String username);
     boolean existsByEmail(String email);
+
 }

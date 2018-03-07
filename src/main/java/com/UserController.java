@@ -38,7 +38,7 @@ public class UserController {
             return "registration";
         }
 
-        else if (userService.findByEmail(userForm.getEmail()) != null) {
+        else if (userService.findByUsername(userForm.getUsername()) != null) {
             return "registration";
         }
 
@@ -47,7 +47,7 @@ public class UserController {
         }
 
         userService.save(userForm);
-        return "welcome";
+        return "home";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -62,7 +62,7 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String loginEnter(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
-        if (!userService.existsByEmail(userForm.getEmail())) {
+        if (!userService.existsByUsername(userForm.getUsername())) {
             return "login";
         }
 
@@ -77,4 +77,5 @@ public class UserController {
     public String welcome(Model model) {
         return "welcome";
     }
+
 }
