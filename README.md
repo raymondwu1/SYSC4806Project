@@ -27,8 +27,3 @@ The objective of the project is to create a web application for a perk manager s
  - A user or user without a profile can search for perks based on increasing/decreasing amount of votes
  - A user can search for perks based on proximity to expiry date
  
-## Scrum
-Dan
-- I got __ done this week 
-- I want to get __ done this week
-- I am blocked on these obstacles
