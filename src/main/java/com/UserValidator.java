@@ -7,7 +7,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Component
-public class RegisterValidation implements Validator {
+public class UserValidator implements Validator {
     @Autowired
     private UserService userService;
 
@@ -19,16 +19,7 @@ public class RegisterValidation implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         User user = (User) o;
-
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty");
-        if (userService.findByEmail(user.getEmail()) != null) {
-            errors.rejectValue("email", "Duplicate.userForm.email");
-        }
-
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
-
-        if (!user.getConfirmPassword().equals(user.getPassword())) {
-            errors.rejectValue("confirmPassword", "Diff.userForm.confirmPassword");
-        }
     }
 }
