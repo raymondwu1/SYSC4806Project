@@ -22,10 +22,12 @@ public class PerkService {
         return perkRepository.findByName(name);
     }
 
+
     public boolean existsByName(String name){
         return perkRepository.existsByName(name);
     }
 
     public Iterable<Perk> findAll(){ return perkRepository.findAll();}
+
 
 }
