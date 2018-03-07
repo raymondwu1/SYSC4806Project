@@ -24,7 +24,7 @@ public class User {
     private String password;
     private String confirmPassword;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     private List<Subscription> subscriptions;
 
     /* Constructors */

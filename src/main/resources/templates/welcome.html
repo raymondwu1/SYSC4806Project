@@ -7,7 +7,6 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="MainPage.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
-    <link rel="stylesheet" href="/resources/demos/style.css"/>
     <style>
         label, input { display:block; }
         input.text { margin-bottom:12px; width:95%; padding: .4em; }
@@ -16,7 +15,7 @@
 </head>
 <body>
     <h1>Welcome</h1>
-    <p th:text="'username: ' + ${userForm.username}" />
+    <p id="userNameLabel" th:text="'username: ' + ${userForm.username}" />
     <div align="right" >
         <button id="AddSubscription"> Add Subscription </button>
         <button id="AddPerk"> Add Perk </button>
@@ -33,7 +32,7 @@
             <fieldset>
                 <label for="name_sub">Name</label>
                 <input type="text" name="name" id="name_sub"/>
-                <input type="submit" name="method" value="AddSubscription" tabindex="-1" style="position:absolute; top:-1000px"/>
+                <input type="submit" value="AddSubscription" tabindex="-1" style="position:absolute; top:-1000px"/>
             </fieldset>
         </form>
     </div>
@@ -47,7 +46,7 @@
                 <label for="name_perk">Subscription</label>
                 <select name="sub" id="sub_perk">
                 </select>
-                <input type="submit" name="method" value="AddPerk" tabindex="-1" style="position:absolute; top:-1000px"/>
+                <input type="submit" value="AddPerk" tabindex="-1" style="position:absolute; top:-1000px"/>
             </fieldset>
         </form>
     </div>

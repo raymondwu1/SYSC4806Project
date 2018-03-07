@@ -1,14 +1,7 @@
 $(document).ready(function() {
-    /*
-        $('#submit').click(function(){
-            $.ajax({
-                url: "http://localhost:8081/AddSubscription?name="+$("#Name_input").text
-            }).then(function(data) {
-                $('#result tr:last').after('<tr><td>'+data.name+'</td><td>'+data.perk+'</td>');
-            });
-        });
-     */
+
         var subs = $("#sub_perk").get(0);
+        var userName = $("#userNameLabel").text().replace("username: ","");
         var dialog_sub,dialog_perk, form,
 
             // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
@@ -28,7 +21,12 @@ $(document).ready(function() {
 
 
         function GetTable() {
-            return 0;
+                $('#InfoTable').empty();
+                $.ajax({
+                    url: "http://localhost:8080/GetTable?userName="+userName
+                }).then(function(data) {
+                    $('#InfoTable').append("<tr><td>Subscription</td><td>Perk</td></tr>"+data);
+                });
         }
 
         function addSubscription() {
@@ -40,7 +38,12 @@ $(document).ready(function() {
                 var option = document.createElement("option");
                 option.text = name_sub.val();
                 subs.add(option);
-                    GetTable();
+
+                $.ajax({
+                    url: "http://localhost:8080/AddSubscription?userName="+userName+"&subName="+name_sub.val()
+                });
+
+                GetTable();
                 dialog_sub.dialog( "close" );
             }
             return valid;
@@ -56,6 +59,9 @@ $(document).ready(function() {
 
         if ( valid ) {
             /* Send ajax and get new data back */
+            $.ajax({
+                async: false,url: "http://localhost:8080/AddPerk?userName="+userName+"&perkName="+name_perk.val()+"&subName="+name_sub.val()+"&desc="+desc_perk.val()
+            });
             GetTable();
             dialog_perk.dialog( "close" );
         }
@@ -112,5 +118,8 @@ $(document).ready(function() {
     $( "#AddPerk" ).click( function() {
         dialog_perk.dialog( "open" );
     });
+
+    GetTable();
+
     }
 );
