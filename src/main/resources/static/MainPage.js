@@ -25,7 +25,7 @@ $(document).ready(function() {
                 $.ajax({
                     url: "http://localhost:8081/GetTable?userName="+userName
                 }).then(function(data) {
-                    $('#InfoTable').append("<tr><td>Subscription</td><td>Perk</td></tr>"+data);
+                    $('#InfoTable').append("<tr><th>Subscription</th><th>Perk</th></tr>"+data);
                 });
         }
 
