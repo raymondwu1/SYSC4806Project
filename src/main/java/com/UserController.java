@@ -84,24 +84,4 @@ public class UserController {
         return "welcome";
     }
 
-    @RequestMapping(value = {"/welcome"}, method = RequestMethod.POST, params="method=AddSubscription")
-    public String addSubscription(@ModelAttribute("subscriptionForm") Subscription subscriptionForm, BindingResult bindingResult, Model model) {
-
-        if (!user.getSubscriptions().contains(subscriptionForm)) {
-            user.addSubscription(subscriptionForm);
-        }
-
-        return "welcome";
-    }
-
-    @RequestMapping(value = {"/welcome"}, method = RequestMethod.POST, params="method=RemoveSubscription")
-    public String removeSubscription(@ModelAttribute("subscriptionForm") Subscription subscriptionForm, BindingResult bindingResult, Model model) {
-
-        if (user.getSubscriptions().contains(subscriptionForm)) {
-            user.removeSubscription(subscriptionForm);
-        }
-
-        return "welcome";
-    }
-
 }

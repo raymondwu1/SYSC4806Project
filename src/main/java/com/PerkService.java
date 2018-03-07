@@ -3,6 +3,8 @@ package com;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PerkService {
     @Autowired
@@ -23,5 +25,7 @@ public class PerkService {
     public boolean existsByName(String name){
         return perkRepository.existsByName(name);
     }
+
+    public Iterable<Perk> findAll(){ return perkRepository.findAll();}
 
 }
