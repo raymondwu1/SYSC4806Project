@@ -49,7 +49,7 @@ public class UserController {
         }
 
         userService.save(userForm);
-        return "home";
+        return "welcome";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
