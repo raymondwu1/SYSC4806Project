@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Perk Manager</title>
@@ -18,11 +18,11 @@
 
         <p>You can <a href="/login">Sign in</a> if you have an account,</p>
         <p>Or <a href="/registration"> Sign up</a> to create your account </p>
-        <p>Or you can explore interesting deals you can find!</p>
+        <p>Or you can explore interesting deals you can find!</p><br>
 
-        <div class="search-container">
+        <br><div style="text-align: center" class="search-container">
             <form action="/PerksLists">
-                <input type="text" placeholder="Explore available perks" name="searchButton">
+                <input type="text" placeholder="Explore available perks" name="searchButton" size="40">
                 <button type="submit">Search</button>
             </form>
         </div>
