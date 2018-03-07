@@ -23,7 +23,7 @@ $(document).ready(function() {
         function GetTable() {
                 $('#InfoTable').empty();
                 $.ajax({
-                    url: "http://localhost:8080/GetTable?userName="+userName
+                    url: "http://localhost:8081/GetTable?userName="+userName
                 }).then(function(data) {
                     $('#InfoTable').append("<tr><td>Subscription</td><td>Perk</td></tr>"+data);
                 });
@@ -40,7 +40,7 @@ $(document).ready(function() {
                 subs.add(option);
 
                 $.ajax({
-                    url: "http://localhost:8080/AddSubscription?userName="+userName+"&subName="+name_sub.val()
+                    url: "http://localhost:8081/AddSubscription?userName="+userName+"&subName="+name_sub.val()
                 });
 
                 GetTable();
@@ -60,7 +60,7 @@ $(document).ready(function() {
         if ( valid ) {
             /* Send ajax and get new data back */
             $.ajax({
-                async: false,url: "http://localhost:8080/AddPerk?userName="+userName+"&perkName="+name_perk.val()+"&subName="+name_sub.val()+"&desc="+desc_perk.val()
+                async: false,url: "http://localhost:8081/AddPerk?userName="+userName+"&perkName="+name_perk.val()+"&subName="+name_sub.val()+"&desc="+desc_perk.val()
             });
             GetTable();
             dialog_perk.dialog( "close" );
