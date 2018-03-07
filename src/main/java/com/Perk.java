@@ -16,6 +16,8 @@ public class Perk {
     private int id;
     private String name;
     private String Description;
+    @ManyToOne
+    private Subscription subscription;
     private java.util.Date expiryDate;
 
     /* Constructors */
@@ -69,4 +71,8 @@ public class Perk {
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
+
+    public Subscription getSubscription(){return subscription;}
+
+    public void setSubscription(Subscription subscription){this.subscription=subscription;}
 }

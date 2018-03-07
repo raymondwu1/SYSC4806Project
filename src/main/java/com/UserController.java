@@ -16,6 +16,8 @@ public class UserController {
     @Autowired
     private UserValidator userValidator;
 
+    private User user;
+
     @RequestMapping(value={"/", "/home"}, method = RequestMethod.GET)
     public String home(Model model){
         return "home";
@@ -70,11 +72,35 @@ public class UserController {
             return "login";
         }
 
+        user = userService.findByUsername(userForm.getUsername());
         return "welcome";
     }
 
     @RequestMapping(value = {"/welcome"}, method = RequestMethod.GET)
     public String welcome(Model model) {
+        if (!model.containsAttribute("subscriptionForm")) {
+            model.addAttribute("subscriptionForm", new Subscription());
+        }
+        return "welcome";
+    }
+
+    @RequestMapping(value = {"/welcome"}, method = RequestMethod.POST, params="method=AddSubscription")
+    public String addSubscription(@ModelAttribute("subscriptionForm") Subscription subscriptionForm, BindingResult bindingResult, Model model) {
+
+        if (!user.getSubscriptions().contains(subscriptionForm)) {
+            user.addSubscription(subscriptionForm);
+        }
+
+        return "welcome";
+    }
+
+    @RequestMapping(value = {"/welcome"}, method = RequestMethod.POST, params="method=RemoveSubscription")
+    public String removeSubscription(@ModelAttribute("subscriptionForm") Subscription subscriptionForm, BindingResult bindingResult, Model model) {
+
+        if (user.getSubscriptions().contains(subscriptionForm)) {
+            user.removeSubscription(subscriptionForm);
+        }
+
         return "welcome";
     }
 
