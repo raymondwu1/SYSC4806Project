@@ -12,6 +12,8 @@ Omar Ibrahim 100943448
 ## Project Description
 The objective of the project is to create a web application for a perk manager system that allows a registered user to create a profile with all the subscriptions that they have. The user is able to search the system for available perks based on matches with their subscriptions, increasing/decreasing amount of votes or proximity to an expiry date. The user can also post new perks into the system and can upvote and downvote the perks depending on whether they find them useful. 
 
+
+## Product Backlog
  
 ## Project Milestone 1 Goals
  - A user can sign up and create an account
