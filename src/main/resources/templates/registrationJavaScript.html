@@ -6,6 +6,9 @@
 </head>
 <body>
 
+<script type="text/javascript" src="js/script.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
 <h1>Register User</h1>
 
 <form action="#" th:action="@{/registration}" th:object="${userForm}" method="post">
@@ -14,16 +17,16 @@
 
     <div>
         <label for="name">Email:</label>
-        <input id="name" type="text" required size="35">
+        <input id="name" type="email" required size="35">
     </div><br>
 
     <div>
         <label for="password">Password:</label>
-        <input id="password" type="text" required size="35">
+        <input id="password" type="password" required size="35">
     </div><br>
     <div>
         <label for="password">Confirm Password:</label>
-        <input id="confirmPassword" type="text" required size="35">
+        <input id="confirmPassword" type="password" required size="35">
     </div><br>
 
     <br><div class="buttons">
