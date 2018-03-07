@@ -14,10 +14,9 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private UserValidation userValidation;
+    private UserValidator userValidator;
 
-    @Autowired
-    private RegisterValidation registerValidation;
+    private User user;
 
     @RequestMapping(value={"/", "/home"}, method = RequestMethod.GET)
     public String home(Model model){
@@ -26,42 +25,63 @@ public class UserController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
-        model.addAttribute("userForm", new User());
+        if (!model.containsAttribute("userForm")) {
+            model.addAttribute("userForm", new User());
+        }
 
         return "registration";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String register(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
-        registerValidation.validate(userForm, bindingResult);
+        userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return "registration";
         }
 
-        userService.save(userForm);
+        else if (userService.findByUsername(userForm.getUsername()) != null) {
+            return "registration";
+        }
 
-        return "welcome";
+        else if (!userForm.getConfirmPassword().equals(userForm.getPassword())) {
+            return "registration";
+        }
+
+        userService.save(userForm);
+        return "home";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model) {
-        model.addAttribute("userForm", new User());
+
+        if (!model.containsAttribute("userForm")) {
+            model.addAttribute("userForm", new User());
+        }
         return "login";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String loginEnter(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
-        userValidation.validate(userForm, bindingResult);
-
-        if (bindingResult.hasErrors()) {
+        userValidator.validate(userForm, bindingResult);
+        if (!userService.existsByUsername(userForm.getUsername())) {
             return "login";
         }
+
+        else if (bindingResult.hasErrors()) {
+            return "login";
+        }
+
+        user = userService.findByUsername(userForm.getUsername());
         return "welcome";
     }
 
     @RequestMapping(value = {"/welcome"}, method = RequestMethod.GET)
     public String welcome(Model model) {
+        if (!model.containsAttribute("subscriptionForm")) {
+            model.addAttribute("subscriptionForm", new Subscription());
+        }
         return "welcome";
     }
+
 }
