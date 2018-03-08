@@ -25,7 +25,7 @@ $(document).ready(function() {
                 $.ajax({
                     url: "http://localhost:8081/GetTable?userName="+userName
                 }).then(function(data) {
-                    $('#InfoTable').append("<tr><td>Subscription</td><td>Perk</td></tr>"+data);
+                    $('#InfoTable').append("<tr><th>Subscription</th><th>Perk</th></tr>"+data);
                 });
         }
 
@@ -39,8 +39,13 @@ $(document).ready(function() {
                 option.text = name_sub.val();
                 subs.add(option);
 
+                var subscriptionJson = {"name":name_sub.val(),"perks":null,"fee":0};
                 $.ajax({
-                    url: "http://localhost:8081/AddSubscription?userName="+userName+"&subName="+name_sub.val()
+                    type:"POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "http://localhost:8081/AddSubscription?userName="+userName,
+                    dataType:"json",
+                    data: JSON.stringify(subscriptionJson)
                 });
 
                 GetTable();
@@ -58,9 +63,14 @@ $(document).ready(function() {
         valid = valid && checkLength( desc_perk, 3, 16 );
 
         if ( valid ) {
-            /* Send ajax and get new data back */
+            var perkJson = {"name":name_perk.val(),"description":desc_perk.val(),"expiryDate":null,"subscription":null};
             $.ajax({
-                async: false,url: "http://localhost:8081/AddPerk?userName="+userName+"&perkName="+name_perk.val()+"&subName="+name_sub.val()+"&desc="+desc_perk.val()
+                type:"POST",
+                async:false,
+                contentType: "application/json; charset=utf-8",
+                url: "http://localhost:8081/AddPerk?userName="+userName+"&subName="+name_sub.val(),
+                dataType:"json",
+                data: JSON.stringify(perkJson )
             });
             GetTable();
             dialog_perk.dialog( "close" );
