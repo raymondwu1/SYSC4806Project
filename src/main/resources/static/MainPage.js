@@ -1,15 +1,21 @@
 $(document).ready(function() {
 
         var subs = $("#sub_perk").get(0);
+        var ctxPath;
         var userName = $("#userNameLabel").text().replace("username: ","");
         var dialog_sub,dialog_perk, form,
-
-            // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
             name_sub = $( "#name_sub" ),
             name_perk = $( "#name_perk" ),
             sub_perk = $( "#sub_perk" ),
             desc_perk = $( "#desc_perk" )
 
+        if(location.hostname === "localhost" || location.hostname === "127.0.0.1")
+        {
+            cntxPath = "http://localhost:8081";
+        }else
+        {
+            cntxPath = "https://perkmanager.herokuapp.com";
+        }
 
         function checkLength( o, min, max ) {
             if ( o.val().length > max || o.val().length < min ) {
@@ -23,7 +29,7 @@ $(document).ready(function() {
         function GetTable() {
                 $('#InfoTable').empty();
                 $.ajax({
-                    url: "http://localhost:8081/GetTable?userName="+userName
+                    url: cntxPath+"/GetTable?userName="+userName
                 }).then(function(data) {
                     $('#InfoTable').append("<tr><th>Subscription</th><th>Perk</th></tr>"+data);
                 });
@@ -43,7 +49,7 @@ $(document).ready(function() {
                 $.ajax({
                     type:"POST",
                     contentType: "application/json; charset=utf-8",
-                    url: "http://localhost:8081/AddSubscription?userName="+userName,
+                    url: cntxPath+"/AddSubscription?userName="+userName,
                     dataType:"json",
                     data: JSON.stringify(subscriptionJson)
                 });
@@ -68,7 +74,7 @@ $(document).ready(function() {
                 type:"POST",
                 async:false,
                 contentType: "application/json; charset=utf-8",
-                url: "http://localhost:8081/AddPerk?userName="+userName+"&subName="+name_sub.val(),
+                url: cntxPath+"/AddPerk?userName="+userName+"&subName="+name_sub.val(),
                 dataType:"json",
                 data: JSON.stringify(perkJson )
             });
