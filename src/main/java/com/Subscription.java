@@ -24,7 +24,7 @@ public class Subscription {
     public Subscription(String name, String fee)
     {
         this.name = name;
-        this.fee = FREE;
+        this.fee = fee;
         this.perks = new ArrayList<Perk>();
     }
 
