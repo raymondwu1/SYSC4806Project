@@ -14,6 +14,8 @@ public class AjaxController {
     private UserService userService;
     @Autowired
     private PerkService perkService;
+    @Autowired
+    private SubscriptionService subscriptionService;
 
     User user;
 
@@ -52,6 +54,7 @@ public class AjaxController {
     @RequestMapping(method=RequestMethod.GET, value = "/AddSubscription")
     public void AddSubscription(@RequestParam String userName,@RequestParam String subName)
     {
+        /*
         boolean save = true;
         user = userService.findByUsername(userName);
         for(int i=0; i < user.getSubscriptions().size();i++)
@@ -64,11 +67,25 @@ public class AjaxController {
             user.addSubscription(new Subscription(subName));
             userService.save(user);
         }
+         */
+
+        user = userService.findByUsername(userName);
+        if (!subscriptionService.existsByName(subName))
+        {
+            subscriptionService.save(new Subscription(subName));
+        }
+        Subscription newSub = subscriptionService.findByName(subName);
+        if (!user.getSubscriptions().contains(newSub)){
+            System.out.println("SUBSC");
+            user.addSubscription(newSub);
+            userService.save(user);
+        }
     }
 
     @RequestMapping(method=RequestMethod.GET, value = "/AddPerk")
     public void AddPerk(@RequestParam String userName,@RequestParam String perkName,@RequestParam String subName,@RequestParam String desc)
     {
+        /*
         boolean save = true;
         int index = -1;
         user = userService.findByUsername(userName);
@@ -92,6 +109,19 @@ public class AjaxController {
             Perk p = new Perk(perkName,desc,subs.get(index));
             user.getSubscriptions().get(index).getPerks().add(p);
             userService.save(user);
+        }
+        */
+        user = userService.findByUsername(userName);
+
+        if (subscriptionService.existsByName(subName)){
+            Subscription sub = subscriptionService.findByName(subName);
+            Perk p = new Perk (perkName, desc);
+            if (user.getSubscriptions().contains(sub)){
+                user.getSubscriptions().get(user.getSubscriptions().indexOf(sub)).addPerk(p);
+                sub.addPerk(p);
+                userService.save(user);
+            }
+
         }
     }
 }

@@ -16,34 +16,22 @@ public class Perk {
     private int id;
     private String name;
     private String description;
-    @ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-    private Subscription subscription;
     private java.util.Date expiryDate;
 
     /* Constructors */
-    public Perk(String name, String description, java.util.Date expiryDate)
-    {
+    public Perk(String name, String description, java.util.Date expiryDate) {
         this.name = name;
         this.description = description;
         this.expiryDate = expiryDate;
     }
 
-    public Perk(String name, String description, Subscription sub)
-    {
-        this.name = name;
-        this.description = description;
-        this.subscription = sub;
-    }
-
     /* We need at least  a name and description to make a perk, default expiry is never. */
-    public Perk(String name, String description)
-    {
+    public Perk(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    public Perk()
-    {
+    public Perk() {
     }
 
     /* Getters & Setters */
@@ -80,7 +68,4 @@ public class Perk {
         this.expiryDate = expiryDate;
     }
 
-    public Subscription getSubscription(){return subscription;}
-
-    public void setSubscription(Subscription subscription){this.subscription=subscription;}
 }

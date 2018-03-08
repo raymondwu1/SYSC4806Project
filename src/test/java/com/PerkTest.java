@@ -63,18 +63,4 @@ public class PerkTest {
         assertEquals(date1, perk.getExpiryDate());
     }
 
-    @Test
-    public void getSubscription() throws Exception {
-        Subscription sub = new Subscription("subscription", "90");
-        perk.setSubscription(sub);
-        assertEquals(sub, perk.getSubscription());
-    }
-
-    @Test
-    public void setSubscription() throws Exception {
-        Subscription sub = new Subscription("subscr", "40");
-        perk.setSubscription(sub);
-        assertEquals(sub, perk.getSubscription());
-    }
-
 }
