@@ -1,14 +1,16 @@
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.Before;
 import org.junit.Test;
 import com.Perk;
 import com.User;
 import com.Subscription;
 /**
- * Test the User, Subscription and perk classes.
+ * Test the relationship between the User, Subscription and perk.
  *
  */
 
-public class EntitiesTest {
+public class EntitieRelationTest {
     private User user;
     private Perk perk;
     private Subscription sub;
@@ -20,6 +22,7 @@ public class EntitiesTest {
     private String nameSub = "testVisa";
     private String fee = "once a month";
 
+    @Before
     public void init()
     {
         user = new User(username,pass);
@@ -30,8 +33,6 @@ public class EntitiesTest {
     @Test
     public void testEntities()
     {
-        init();
-
         sub.addPerk(perk);
         user.addSubscription(sub);
 
@@ -41,37 +42,8 @@ public class EntitiesTest {
         sub.removePerk(perk);
         user.removeSubscription(sub);
 
+        assertThat(sub.getPerks().size() == 0);
         assertThat(user.getSubscriptions().size() == 0);
-        assertThat(user.getSubscriptions().size() == 0);
     }
 
-    @Test
-    public void testUser()
-    {
-        init();
-
-        assertThat(user.getUsername().equals(username));
-        assertThat(user.getPassword().equals(pass));
-    }
-
-    @Test
-    public void testPerk()
-    {
-        init();
-
-        assertThat(perk.getName().equals(namePerk));
-        assertThat(perk.getDescription().equals(description));
-        assertThat(perk.getExpiryDate() == null);
-    }
-
-    @Test
-    public void testSubscription()
-    {
-        init();
-
-        assertThat(sub.getName().equals(nameSub));
-        assertThat(sub.getFee().equals(fee));
-
-        assertThat(new Subscription(nameSub).getFee().equals("FREE"));
-    }
 }
