@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
         var subs = $("#sub_perk").get(0);
+        var ctxPath;
         var userName = $("#userNameLabel").text().replace("username: ","");
         var dialog_sub,dialog_perk, form,
 
@@ -9,6 +10,13 @@ $(document).ready(function() {
             sub_perk = $( "#sub_perk" ),
             desc_perk = $( "#desc_perk" )
 
+        if(location.hostname === "localhost" || location.hostname === "127.0.0.1")
+        {
+            cntxPath = "http://localhost:8081";
+        }else
+        {
+            cntxPath = "https://perkmanager.herokuapp.com";
+        }
 
         function checkLength( o, min ) {
             if ( o.val().length < min ) {
@@ -22,7 +30,7 @@ $(document).ready(function() {
         function GetTable() {
                 $('#InfoTable').empty();
                 $.ajax({
-                    url: "http://localhost:8081/GetTable?userName="+userName
+                    url: cntxPath+"/GetTable?userName="+userName
                 }).then(function(data) {
                     $('#InfoTable').append("<tr><th>Subscription</th><th>Perk</th></tr>"+data);
                 });
@@ -38,8 +46,13 @@ $(document).ready(function() {
                 option.text = name_sub.val();
                 subs.add(option);
 
+                var subscriptionJson = {"name":name_sub.val(),"perks":null,"fee":0};
                 $.ajax({
-                    url: "http://localhost:8081/AddSubscription?userName="+userName+"&subName="+name_sub.val()
+                    type:"POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: cntxPath+"/AddSubscription?userName="+userName,
+                    dataType:"json",
+                    data: JSON.stringify(subscriptionJson)
                 });
 
                 GetTable();
@@ -57,9 +70,14 @@ $(document).ready(function() {
         valid = valid && checkLength( desc_perk, 3 );
 
         if ( valid ) {
-            /* Send ajax and get new data back */
+            var perkJson = {"name":name_perk.val(),"description":desc_perk.val(),"expiryDate":null,"subscription":null};
             $.ajax({
-                async: false,url: "http://localhost:8081/AddPerk?userName="+userName+"&perkName="+name_perk.val()+"&subName="+name_sub.val()+"&desc="+desc_perk.val()
+                type:"POST",
+                async:false,
+                contentType: "application/json; charset=utf-8",
+                url: cntxPath+"/AddPerk?userName="+userName+"&subName="+name_sub.val(),
+                dataType:"json",
+                data: JSON.stringify(perkJson )
             });
             GetTable();
             dialog_perk.dialog( "close" );
