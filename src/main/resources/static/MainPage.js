@@ -4,6 +4,7 @@ $(document).ready(function() {
         var ctxPath;
         var userName = $("#userNameLabel").text().replace("username: ","");
         var dialog_sub,dialog_perk, form,
+
             name_sub = $( "#name_sub" ),
             name_perk = $( "#name_perk" ),
             sub_perk = $( "#sub_perk" ),
@@ -17,8 +18,8 @@ $(document).ready(function() {
             cntxPath = "https://perkmanager.herokuapp.com";
         }
 
-        function checkLength( o, min, max ) {
-            if ( o.val().length > max || o.val().length < min ) {
+        function checkLength( o, min ) {
+            if ( o.val().length < min ) {
                 return false;
             } else {
                 return true;
@@ -38,7 +39,7 @@ $(document).ready(function() {
         function addSubscription() {
             var valid = true;
 
-            valid = valid && checkLength( name_sub,  3, 16 );
+            valid = valid && checkLength( name_sub,  3 );
 
             if ( valid ) {
                 var option = document.createElement("option");
@@ -64,9 +65,9 @@ $(document).ready(function() {
     function addPerk() {
         var valid = true;
 
-        valid = valid && checkLength( name_perk, 3, 16 );
-        valid = valid && checkLength( sub_perk, 3, 16 );
-        valid = valid && checkLength( desc_perk, 3, 16 );
+        valid = valid && checkLength( name_perk, 3 );
+        valid = valid && checkLength( sub_perk, 3 );
+        valid = valid && checkLength( desc_perk, 3 );
 
         if ( valid ) {
             var perkJson = {"name":name_perk.val(),"description":desc_perk.val(),"expiryDate":null,"subscription":null};
