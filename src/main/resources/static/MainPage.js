@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
         var subs = $("#sub_perk").get(0);
-        var ctxPath;
+        var cntxPath = window.location.protocol+ "//" + window.location.host;
         var userName = $("#userNameLabel").text().replace("username: ","");
         var dialog_sub,dialog_perk, form,
 
@@ -10,6 +10,8 @@ $(document).ready(function() {
             sub_perk = $( "#sub_perk" ),
             desc_perk = $( "#desc_perk" )
 
+
+/*
         if(location.hostname === "localhost" || location.hostname === "127.0.0.1")
         {
             cntxPath = "http://localhost:8081";
@@ -17,7 +19,7 @@ $(document).ready(function() {
         {
             cntxPath = "https://perkmanager.herokuapp.com";
         }
-
+*/
         function checkLength( o, min ) {
             if ( o.val().length < min ) {
                 return false;
