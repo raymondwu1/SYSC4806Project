@@ -67,7 +67,10 @@ public class UserController {
         if (!userService.existsByUsername(userForm.getUsername())) {
             return "login";
         }
-
+        else if(!userService.existsByPassword(userForm.getPassword()))
+        {
+            return "login";
+        }
         else if (bindingResult.hasErrors()) {
             return "login";
         }
