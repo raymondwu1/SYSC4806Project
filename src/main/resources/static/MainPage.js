@@ -18,7 +18,20 @@ $(document).ready(function() {
             cntxPath = "https://perkmanager.herokuapp.com";
         }
 
-        function checkLength( o, min ) {
+        /* Ajax call to get all subscriptions to populate add perk dropdown menu. */
+        $.ajax({
+            url: cntxPath+"/GetSubs?userName="+userName
+        }).then(function(data) {
+            for(var i=0;i < data.length;i++)
+            {
+                var option = document.createElement("option");
+                option.text = data[i];
+                subs.add(option);
+            }
+        });
+
+
+    function checkLength( o, min ) {
             if ( o.val().length < min ) {
                 return false;
             } else {
