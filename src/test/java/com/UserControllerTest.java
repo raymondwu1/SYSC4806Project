@@ -59,7 +59,7 @@ public class UserControllerTest {
                 .param("password","testPass")
                 .param("confirmPassword", "wrongPass"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("registration"));
+                .andExpect(view().name("registrationErrorPage"));
     }
 
 
@@ -91,6 +91,6 @@ public class UserControllerTest {
 
         this.mvc.perform(post("/login"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("login"));
+                .andExpect(view().name("CredentialsErrorPage"));
     }
 }

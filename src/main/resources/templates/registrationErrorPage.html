@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Error</title>
+</head>
+
+<body>
+
+<h1>Registration Failed</h1>
+<form action="#" th:action="@{/registrationErrorPage}" th:object="${userForm}" method="post">
+    <p> An error occurred while trying to register your account </p>
+    <p> Make sure the credentials have not been used before </p>
+    <a href="/registration">Try Again</a> <br/>
+    <br/><a href="/login"> Already have an account?... Sign In!</a>
+</form>
+
+</body>
+
+</html>
