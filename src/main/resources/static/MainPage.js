@@ -58,6 +58,7 @@ $(document).ready(function() {
                 var subscriptionJson = {"name":name_sub.val(),"perks":null,"fee":0};
                 $.ajax({
                     type:"POST",
+                    async:false,
                     contentType: "application/json; charset=utf-8",
                     url: cntxPath+"/AddSubscription?userName="+userName,
                     dataType:"json",
