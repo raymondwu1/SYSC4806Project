@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 public class Subscription {
     /* Subscription fields */
-    @ManyToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     private List<Perk> perks;
     @Id
     @Column(unique=true)
