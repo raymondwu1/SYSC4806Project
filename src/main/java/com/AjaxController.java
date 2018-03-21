@@ -16,6 +16,8 @@ public class AjaxController {
     private UserService userService;
     @Autowired
     private PerkService perkService;
+    @Autowired
+    private SubscriptionService subscriptionService;
 
     User user;
 
@@ -52,17 +54,15 @@ public class AjaxController {
     @RequestMapping(method=RequestMethod.POST, value = "/AddSubscription",consumes = {"application/json"})
     public void AddSubscription(@RequestParam String userName,@RequestBody Subscription subscriptionJson)
     {
-        boolean save = true;
         user = userService.findByUsername(userName);
-        /* Save the subscription but first check if te subscription is already there. */
-        for(int i=0; i < user.getSubscriptions().size();i++)
-        {
-            if (user.getSubscriptions().get(i).getName().equals(subscriptionJson.getName())) {
-                save = false;
-            }
+
+        if (!subscriptionService.existsByName(subscriptionJson.getName())) {
+            subscriptionService.save(subscriptionJson);
         }
-        if(save) {
-            user.addSubscription(subscriptionJson);
+
+        Subscription newSub = subscriptionService.findByName(subscriptionJson.getName());
+        if (!user.getSubscriptions().contains(newSub)) {
+            user.addSubscription(newSub);
             userService.save(user);
         }
     }
@@ -76,28 +76,15 @@ public class AjaxController {
      * */
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method=RequestMethod.POST, value = "/AddPerk",consumes = {"application/json"})
-    public void AddPerk(@RequestParam String userName,@RequestParam String subName,@RequestBody Perk perkJson)
-    {
-        boolean save = true;
-        int index = -1;
+    public void AddPerk(@RequestParam String userName,@RequestParam String subName,@RequestBody Perk perkJson) {
         user = userService.findByUsername(userName);
-        /* Find subscription of that name and save the perk to that subscription. If the perk already exists don't save.*/
-        List<Subscription> subs = user.getSubscriptions();
-        for(int i=0; i < subs.size();i++)
-        {
-            if(subName.equals(subs.get(i).getName())) {
-                for(int n=0; n < subs.get(i).getPerks().size();n++)
-                {
-                    if(subs.get(i).getPerks().get(n).getName().equals(perkJson.getName())) {
-                        save = false;
-                    }
-                }
-                index = i;
+
+        if (subscriptionService.existsByName(subName)) {
+            Subscription sub = subscriptionService.findByName(subName);
+            if (!sub.getPerks().contains(perkJson)) {
+                sub.addPerk(perkJson);
+                subscriptionService.save(sub);
             }
-        }
-        if (save && index != -1) {
-            user.getSubscriptions().get(index).getPerks().add(perkJson);
-            userService.save(user);
         }
     }
 

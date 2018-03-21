@@ -28,6 +28,4 @@ public class PerkService {
     }
 
     public Iterable<Perk> findAll(){ return perkRepository.findAll();}
-
-
 }

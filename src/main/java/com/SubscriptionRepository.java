@@ -1,0 +1,10 @@
+package com;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+@RepositoryRestResource(collectionResourceRel = "Subscription", path = "Subscription")
+public interface SubscriptionRepository extends CrudRepository<Subscription, String>{
+    Subscription findByName(String name);
+    boolean existsByName(String name);
+}
