@@ -31,7 +31,7 @@ public class UserControllerTest {
 
     @Test
     public void homeShouldReturnHome() throws Exception{
-        this.mvc.perform(get("/home")).andDo(print())
+        this.mvc.perform(get("/home"))
                 .andExpect(status().isOk());
     }
 
