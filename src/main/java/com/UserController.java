@@ -116,8 +116,9 @@ public class UserController {
         else if (user.getPassword().equals(userForm.getPassword())) {
             return "forgotPasswordErrorPage";
         }
+        user.setPassword(userForm.getPassword());
 
-        userService.save(userForm);
+        userService.save(user);
         return "welcome";
     }
 
