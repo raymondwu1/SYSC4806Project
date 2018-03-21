@@ -19,42 +19,42 @@ public class AjaxController {
 
     User user;
 
+    /*
+     * Get table rows for a user populated with that users subscription and perk names.
+     * @Param: userName=userName of user
+     * @Ret:HTML rows of that users subscription and perks
+     * */
+    @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method=RequestMethod.GET, value = "/GetTable")
     public String GetTable(@RequestParam String userName)
     {
         String ret = "";
-        user = userService.findByUsername(userName);
+        user = userService.findByUsername(userName);//Find user
         List<Subscription> subs = user.getSubscriptions();
 
+        /* For all subscriptions get all perks and append table row. */
         for(int i = 0; i < subs.size(); i++) {
             for(int n = 0; n < subs.get(i).getPerks().size(); n++) {
                 ret += "<tr><td>" + subs.get(i).getName() + "</td><td>" + subs.get(i).getPerks().get(n).getName() + "</td>";
             }
         }
 
-        /*Iterable<Perk> perks = perkService.findAll();
-        Iterator<Perk> it = perks.iterator();
-        while(it.hasNext())
-        {
-            Perk p = it.next();
-            System.out.print("Perk"+p.getName());
-            for(int i = 0; i < subs.size(); i++) {
-                System.out.print("SUBS" + subs.get(i).getName());
-                if (p.getSubscription().equals(subs.get(i))) {
-                    ret += "<tr><td>" + p.getSubscription().getName() + "</td><td>" + p.getName() + "</td>";
-                }
-            }
-        }*/
-        System.out.println("FINAL"+ret);
         return ret;
     }
 
+
+    /*
+     * Add subscription to user.
+     * @Param: userName=userName of user
+     * @Param: perkJson=Json of the subscription to be added
+     * */
+    @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method=RequestMethod.POST, value = "/AddSubscription",consumes = {"application/json"})
-    public ResponseEntity<Subscription> AddSubscription(@RequestParam String userName,@RequestBody Subscription subscriptionJson)
+    public void AddSubscription(@RequestParam String userName,@RequestBody Subscription subscriptionJson)
     {
-        System.out.println("SUB "+subscriptionJson.getName());
         boolean save = true;
         user = userService.findByUsername(userName);
+        /* Save the subscription but first check if te subscription is already there. */
         for(int i=0; i < user.getSubscriptions().size();i++)
         {
             if (user.getSubscriptions().get(i).getName().equals(subscriptionJson.getName())) {
@@ -65,17 +65,23 @@ public class AjaxController {
             user.addSubscription(subscriptionJson);
             userService.save(user);
         }
-        return new ResponseEntity<Subscription>(HttpStatus.OK);
     }
 
+
+    /*
+     * Add perk to a users subscription.
+     * @Param: userName=userName of user
+     * @Param: subName=name of subscription
+     * @Param: perkJson=Json of the perk to be added
+     * */
+    @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method=RequestMethod.POST, value = "/AddPerk",consumes = {"application/json"})
     public void AddPerk(@RequestParam String userName,@RequestParam String subName,@RequestBody Perk perkJson)
     {
-        System.out.println("PERK "+perkJson.getName());
         boolean save = true;
         int index = -1;
         user = userService.findByUsername(userName);
-
+        /* Find subscription of that name and save the perk to that subscription. If the perk already exists don't save.*/
         List<Subscription> subs = user.getSubscriptions();
         for(int i=0; i < subs.size();i++)
         {
