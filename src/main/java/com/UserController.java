@@ -65,14 +65,14 @@ public class UserController {
     public String loginEnter(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
         if (!userService.existsByUsername(userForm.getUsername())) {
-            return "login";
+            return "CredentialsErrorPage";
         }
         else if(!userService.existsByPassword(userForm.getPassword()))
         {
-            return "login";
+            return "CredentialsErrorPage";
         }
         else if (bindingResult.hasErrors()) {
-            return "login";
+            return "CredentialsErrorPage";
         }
 
         user = userService.findByUsername(userForm.getUsername());
