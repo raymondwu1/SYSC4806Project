@@ -14,17 +14,6 @@ public class PerkTest {
     private Perk perk = new Perk("name", "desc", date);
     private Perk perk1 = new Perk("name1", "desc1", date1);
 
-    @Test
-    public void getId() throws Exception {
-        perk.setId(23);
-        assertEquals(23, perk.getId());
-    }
-
-    @Test
-    public void setId() throws Exception {
-        perk1.setId(53);
-        assertEquals(53, perk1.getId());
-    }
 
     @Test
     public void getName() throws Exception {
@@ -61,20 +50,6 @@ public class PerkTest {
     public void setExpiryDate() throws Exception {
         perk.setExpiryDate(date1);
         assertEquals(date1, perk.getExpiryDate());
-    }
-
-    @Test
-    public void getSubscription() throws Exception {
-        Subscription sub = new Subscription("subscription", "90");
-        perk.setSubscription(sub);
-        assertEquals(sub, perk.getSubscription());
-    }
-
-    @Test
-    public void setSubscription() throws Exception {
-        Subscription sub = new Subscription("subscr", "40");
-        perk.setSubscription(sub);
-        assertEquals(sub, perk.getSubscription());
     }
 
 }
