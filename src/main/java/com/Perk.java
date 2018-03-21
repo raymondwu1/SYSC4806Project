@@ -12,8 +12,7 @@ import javax.persistence.*;
 public class Perk {
     /* Perk fields */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @Column(unique=true)
     private String name;
     private String description;
     private java.util.Date expiryDate;
@@ -35,14 +34,6 @@ public class Perk {
     }
 
     /* Getters & Setters */
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -66,6 +57,29 @@ public class Perk {
 
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (o == null) {
+            return false;
+        }
+        if (o == this) {
+            return true;
+        }
+        if(!(o instanceof Perk)) {
+            return false;
+        }
+        Perk p = (Perk) o;
+        if ((this.name==null) ? (p.name !=null) : !this.name.equals(p.name)){
+            return false;
+        }
+        if ((this.description==null) ? (p.description !=null) : !this.description.equals(p.description)) {
+            return false;
+        }
+        if ((this.expiryDate==null) ? (p.expiryDate !=null) : !this.expiryDate.equals(p.expiryDate))
+            return false;
+        return true;
     }
 
 }
