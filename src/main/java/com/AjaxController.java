@@ -100,4 +100,21 @@ public class AjaxController {
             userService.save(user);
         }
     }
+
+    /*
+    * Return a list of subscription names for a user
+    * @Param: userName = name of user
+    * @Ret: List of subscription names
+    * */
+    @RequestMapping(method=RequestMethod.GET, value = "/GetSubs")
+    public List<String> GetSubs(@RequestParam String userName)
+    {
+        ArrayList<String> subs = new ArrayList<String>();
+        user = userService.findByUsername(userName);
+        for (Subscription subscription : user.getSubscriptions()) {
+            subs.add(subscription.getName());
+        }
+        return subs;
+    }
+
 }

@@ -11,6 +11,18 @@ $(document).ready(function() {
             sub_perk = $( "#sub_perk" ),
             desc_perk = $( "#desc_perk" )
 
+
+        $.ajax({
+            url: cntxPath+"/GetSubs?userName="+userName
+        }).then(function(data) {
+            for(var i=0;i < data.length;i++)
+            {
+                var option = document.createElement("option");
+                option.text = data[i];
+                subs.add(option);
+            }
+        });
+
     /* Make sure they aren't pushing at least 3 chars. */
         function checkLength( o, min ) {
             if ( o.val().length < min ) {
