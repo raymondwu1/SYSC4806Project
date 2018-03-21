@@ -1,6 +1,5 @@
 package com;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,5 +60,15 @@ public class UserRepositoryTest {
 
         assertTrue(userRepository.existsByEmail(user.getEmail()));
     }
+
+    @Test
+    public void delete() throws Exception {
+        User user = new User("test4","testpass4");
+        entityManager.persist(user);
+        entityManager.flush();
+        userRepository.delete(user);
+        assertFalse(userRepository.existsByUsername(user.getUsername()));
+    }
+
 
 }
