@@ -16,6 +16,7 @@ public class Perk {
     private int id;
     private String name;
     private String description;
+    private int score;
     @ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     private Subscription subscription;
     private java.util.Date expiryDate;
@@ -26,6 +27,7 @@ public class Perk {
         this.name = name;
         this.description = description;
         this.expiryDate = expiryDate;
+        this.score = 0;
     }
 
     public Perk(String name, String description, Subscription sub)
@@ -33,6 +35,7 @@ public class Perk {
         this.name = name;
         this.description = description;
         this.subscription = sub;
+        this.score = 0;
     }
 
     /* We need at least  a name and description to make a perk, default expiry is never. */
@@ -83,4 +86,16 @@ public class Perk {
     public Subscription getSubscription(){return subscription;}
 
     public void setSubscription(Subscription subscription){this.subscription=subscription;}
+
+    public int getScore() {
+        return score;
+    }
+
+    public void upvote() {
+        this.score++;
+    }
+
+    public void downvote() {
+        this.score--;
+    }
 }

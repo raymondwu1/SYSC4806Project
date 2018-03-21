@@ -28,7 +28,10 @@ public class AjaxController {
 
         for(int i = 0; i < subs.size(); i++) {
             for(int n = 0; n < subs.get(i).getPerks().size(); n++) {
-                ret += "<tr><td>" + subs.get(i).getName() + "</td><td>" + subs.get(i).getPerks().get(n).getName() + "</td>";
+                ret += "<tr><td>" + subs.get(i).getName() + "</td><td>" + subs.get(i).getPerks().get(n).getName() + "</td>" +
+                        "<td><button class=\"upvotebutton\">Upvote</button></td><td>" +
+                        "</td><td><button class=\"downvotebutton\">Downvote</button></td></tr>" +
+                        subs.get(i).getPerks().get(n).getScore();
             }
         }
 
