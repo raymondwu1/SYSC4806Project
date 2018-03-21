@@ -1,6 +1,8 @@
 package com;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,86 +16,79 @@ public class AjaxController {
     private UserService userService;
     @Autowired
     private PerkService perkService;
-    @Autowired
-    private SubscriptionService subscriptionService;
 
     User user;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/GetTable")
-    @ResponseBody
-    public String GetTable(@RequestParam String userName) {
+    /*
+     * Get table rows for a user populated with that users subscription and perk names.
+     * @Param: userName=userName of user
+     * @Ret:HTML rows of that users subscription and perks
+     * */
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method=RequestMethod.GET, value = "/GetTable")
+    public String GetTable(@RequestParam String userName)
+    {
         String ret = "";
-        user = userService.findByUsername(userName);
+        user = userService.findByUsername(userName);//Find user
         List<Subscription> subs = user.getSubscriptions();
 
-        for (int i = 0; i < subs.size(); i++) {
-            System.out.println("PERKS" + subs.get(i).getPerks().size());
-            for (int n = 0; n < subs.get(i).getPerks().size(); n++) {
+        /* For all subscriptions get all perks and append table row. */
+        for(int i = 0; i < subs.size(); i++) {
+            for(int n = 0; n < subs.get(i).getPerks().size(); n++) {
                 ret += "<tr><td>" + subs.get(i).getName() + "</td><td>" + subs.get(i).getPerks().get(n).getName() + "</td>";
             }
         }
 
-        /*Iterable<Perk> perks = perkService.findAll();
-        Iterator<Perk> it = perks.iterator();
-        while(it.hasNext())
-        {
-            Perk p = it.next();
-            System.out.print("Perk"+p.getName());
-            for(int i = 0; i < subs.size(); i++) {
-                System.out.print("SUBS" + subs.get(i).getName());
-                if (p.getSubscription().equals(subs.get(i))) {
-                    ret += "<tr><td>" + p.getSubscription().getName() + "</td><td>" + p.getName() + "</td>";
-                }
-            }
-        }*/
-        System.out.println("FINAL" + ret);
         return ret;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/AddSubscription")
-    public void AddSubscription(@RequestParam String userName, @RequestParam String subName) {
-        /*
+
+    /*
+     * Add subscription to user.
+     * @Param: userName=userName of user
+     * @Param: perkJson=Json of the subscription to be added
+     * */
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method=RequestMethod.POST, value = "/AddSubscription",consumes = {"application/json"})
+    public void AddSubscription(@RequestParam String userName,@RequestBody Subscription subscriptionJson)
+    {
         boolean save = true;
         user = userService.findByUsername(userName);
+        /* Save the subscription but first check if te subscription is already there. */
         for(int i=0; i < user.getSubscriptions().size();i++)
         {
-            if (user.getSubscriptions().get(i).getName().equals(subName)) {
+            if (user.getSubscriptions().get(i).getName().equals(subscriptionJson.getName())) {
                 save = false;
             }
         }
         if(save) {
-            user.addSubscription(new Subscription(subName));
-            userService.save(user);
-        }
-         */
-
-        user = userService.findByUsername(userName);
-        if (!subscriptionService.existsByName(subName)) {
-            subscriptionService.save(new Subscription(subName));
-        }
-        Subscription newSub = subscriptionService.findByName(subName);
-        if (!user.getSubscriptions().contains(newSub)) {
-            System.out.println("SUBSC");
-            user.addSubscription(newSub);
+            user.addSubscription(subscriptionJson);
             userService.save(user);
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/AddPerk")
-    public void AddPerk(@RequestParam String userName, @RequestParam String perkName, @RequestParam String subName, @RequestParam String desc) {
-        /*
+
+    /*
+     * Add perk to a users subscription.
+     * @Param: userName=userName of user
+     * @Param: subName=name of subscription
+     * @Param: perkJson=Json of the perk to be added
+     * */
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method=RequestMethod.POST, value = "/AddPerk",consumes = {"application/json"})
+    public void AddPerk(@RequestParam String userName,@RequestParam String subName,@RequestBody Perk perkJson)
+    {
         boolean save = true;
         int index = -1;
         user = userService.findByUsername(userName);
-
+        /* Find subscription of that name and save the perk to that subscription. If the perk already exists don't save.*/
         List<Subscription> subs = user.getSubscriptions();
         for(int i=0; i < subs.size();i++)
         {
-            System.out.println(subName + " 0" +subs.get(i).getName());
             if(subName.equals(subs.get(i).getName())) {
                 for(int n=0; n < subs.get(i).getPerks().size();n++)
                 {
-                    if(subs.get(i).getPerks().get(n).getName().equals(perkName)) {
+                    if(subs.get(i).getPerks().get(n).getName().equals(perkJson.getName())) {
                         save = false;
                     }
                 }
@@ -101,22 +96,25 @@ public class AjaxController {
             }
         }
         if (save && index != -1) {
-
-            Perk p = new Perk(perkName,desc,subs.get(index));
-            user.getSubscriptions().get(index).getPerks().add(p);
+            user.getSubscriptions().get(index).getPerks().add(perkJson);
             userService.save(user);
         }
-        */
-        user = userService.findByUsername(userName);
-
-        if (subscriptionService.existsByName(subName)) {
-            Subscription sub = subscriptionService.findByName(subName);
-            Perk p = new Perk(perkName, desc);
-            if (!sub.getPerks().contains(p)) {
-                sub.addPerk(p);
-                subscriptionService.save(sub);
-            }
-
-        }
     }
+
+    /*
+    * Return a list of subscription names for a user
+    * @Param: userName = name of user
+    * @Ret: List of subscription names
+    * */
+    @RequestMapping(method=RequestMethod.GET, value = "/GetSubs")
+    public List<String> GetSubs(@RequestParam String userName)
+    {
+        ArrayList<String> subs = new ArrayList<String>();
+        user = userService.findByUsername(userName);
+        for (Subscription subscription : user.getSubscriptions()) {
+            subs.add(subscription.getName());
+        }
+        return subs;
+    }
+
 }
