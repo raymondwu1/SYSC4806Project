@@ -1,14 +1,11 @@
 package com;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import javax.validation.constraints.AssertTrue;
 
 import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
@@ -22,23 +19,23 @@ public class PerkRepositoryTest {
     private PerkRepository perkRepository;
 
     @Test
-    public void findByName() throws Exception {
+    public void findByCode() throws Exception {
         Perk perk = new Perk("test discount", "get 10% off");
         entityManager.persist(perk);
         entityManager.flush();
 
-        Perk found = perkRepository.findByName(perk.getName());
+        Perk found = perkRepository.findByCode(perk.getCode());
 
-        assertEquals(found.getName(),perk.getName());
+        assertEquals(found.getCode(),perk.getCode());
     }
 
     @Test
-    public void existsByName() throws Exception {
+    public void existsByCode() throws Exception {
         Perk perk = new Perk("test", "get 20% off");
         entityManager.persist(perk);
         entityManager.flush();
 
-        assertTrue(perkRepository.existsByName(perk.getName()));
+        assertTrue(perkRepository.existsByCode(perk.getCode()));
     }
 
 }

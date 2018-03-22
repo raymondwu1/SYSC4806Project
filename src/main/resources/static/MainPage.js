@@ -7,9 +7,10 @@ $(document).ready(function() {
         var dialog_sub,dialog_perk, form,
 
             name_sub = $( "#name_sub" ),
-            name_perk = $( "#name_perk" ),
+            code_perk = $( "#code_perk" ),
             sub_perk = $( "#sub_perk" ),
-            desc_perk = $( "#desc_perk" )
+            desc_perk = $( "#desc_perk" ),
+            exp_perk = $( "#exp_perk" );
 
 
         $.ajax({
@@ -26,6 +27,7 @@ $(document).ready(function() {
     /* Make sure they aren't pushing at least 3 chars. */
         function checkLength( o, min ) {
             if ( o.val().length < min ) {
+                alert("Invalid input")
                 return false;
             } else {
                 return true;
@@ -39,7 +41,7 @@ $(document).ready(function() {
                 $.ajax({
                     url: cntxPath+"/GetTable?userName="+userName
                 }).then(function(data) {
-                    $('#InfoTable').append("<tr><th>Subscription</th><th>Perk</th></tr>"+data);
+                    $('#InfoTable').append("<tr><th>Subscription</th><th>Perk Code</th><th>Perk Description</th><th>Expiry Date</th></tr>"+data);
                 });
         }
 
@@ -75,13 +77,14 @@ $(document).ready(function() {
     function addPerk() {
         var valid = true;
 
-        valid = valid && checkLength( name_perk, 3 );
+        valid = valid && checkLength( code_perk, 3 );
         valid = valid && checkLength( sub_perk, 3 );
         valid = valid && checkLength( desc_perk, 3 );
+        valid = valid && checkLength( exp_perk, 10 );
 
         if ( valid ) {
             /* Construct JSON and send. This call is not async because the calls to GetTable finishes before this one.  */
-            var perkJson = {"name":name_perk.val(),"description":desc_perk.val(),"expiryDate":null,"subscription":null};
+            var perkJson = {"code":code_perk.val(),"description":desc_perk.val(),"expiryDate":exp_perk.val()};
             $.ajax({
                 type:"POST",
                 async:false,

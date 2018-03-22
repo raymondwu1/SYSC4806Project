@@ -17,14 +17,14 @@ public class PerkTest {
 
     @Test
     public void getName() throws Exception {
-        assertEquals("name", perk.getName());
-        assertEquals("name1", perk1.getName());
+        assertEquals("name", perk.getCode());
+        assertEquals("name1", perk1.getCode());
     }
 
     @Test
     public void setName() throws Exception {
-        perk.setName("asdf");
-        assertEquals("asdf", perk.getName());
+        perk.setCode("asdf");
+        assertEquals("asdf", perk.getCode());
     }
 
     @Test

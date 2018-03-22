@@ -12,6 +12,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,6 +48,7 @@ public class AjaxControllerTest {
     private String description = "This is a test";
     private String nameSub = "testVisa";
     private String fee = "once a month";
+    private java.util.Date expiryDate =  new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime();
 
     /* Setup objects. */
     @Before
@@ -50,6 +56,7 @@ public class AjaxControllerTest {
     {
         user = new User(username,pass);
         perk = new Perk(namePerk, description);
+        perk.setExpiryDate(expiryDate);
         sub = new Subscription(nameSub,fee);
     }
 
@@ -76,7 +83,9 @@ public class AjaxControllerTest {
         MvcResult result = mvc.perform(get("/GetTable").param("userName", user.getUsername())).andExpect(status().isOk()).andReturn();
         String content = result.getResponse().getContentAsString();
         /* Verify the table returns the sub and perk name. */
-        assert(content.contains(sub.getName()) && content.contains(perk.getName()));
+        assert(content.contains(sub.getName()));
+        assert(content.contains(perk.getCode()));
+        assert(content.contains(new SimpleDateFormat("yyyy-MM-dd").format(expiryDate)));
     }
 
     /* Test AddSubscription method */
@@ -107,7 +116,20 @@ public class AjaxControllerTest {
         /* Verify perk was added. */
         List<Perk> tempPerks = tempSubs.get(0).getPerks();
         assert(tempPerks.size() == 1);
-        assert(tempPerks.get(0).getName().equals(perk.getName()));
+        assert(tempPerks.get(0).getCode().equals(perk.getCode()));
+    }
+
+    /* Test AddPerk method */
+    @Test
+    public void testGetSubs() throws Exception {
+        sub.addPerk(perk);
+        user.addSubscription(sub);
+        userService.save(user);
+        MvcResult result = mvc.perform(get("/GetSubs").param("userName", user.getUsername())).andExpect(status().isOk()).andReturn();
+        String content = result.getResponse().getContentAsString();
+        /* Verify the table returns the sub and perk name. */
+        System.out.print(content);
+        assert(content.contains(sub.getName()));
     }
 
     /* Helper method that converts an object to json. */

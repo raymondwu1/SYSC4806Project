@@ -73,6 +73,7 @@ public class UserController {
             return "CredentialsErrorPage";
         }
 
+
         user = userService.findByUsername(userForm.getUsername());
         if (user.getPassword().equals(userForm.getPassword())) {
             return "welcome";

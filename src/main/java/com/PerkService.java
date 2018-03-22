@@ -18,13 +18,13 @@ public class PerkService {
         perkRepository.delete(perk);
     }
 
-    public Perk findByName(String name){
-        return perkRepository.findByName(name);
+    public Perk findByName(String code){
+        return perkRepository.findByCode(code);
     }
 
 
-    public boolean existsByName(String name){
-        return perkRepository.existsByName(name);
+    public boolean existsByName(String code){
+        return perkRepository.existsByCode(code);
     }
 
     public Iterable<Perk> findAll(){ return perkRepository.findAll();}
