@@ -26,5 +26,6 @@ public class PerkController {
         perk = perkService.findByName(perkJson.getName());
         perk.downvote();
         perkService.save(perk);
+        //
     }
 }
