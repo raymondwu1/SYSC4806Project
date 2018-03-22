@@ -35,12 +35,16 @@ $(document).ready(function() {
 
         /* Get the subscription table in the mainpage. */
         function GetTable() {
+
                 $('#InfoTable').empty();
                 $.ajax({
+                    async:false,
                     url: cntxPath+"/GetTable?userName="+userName
                 }).then(function(data) {
                     $('#InfoTable').append("<tr><th>Subscription</th><th>Perk</th></tr>"+data);
                 });
+            addUpvoteListener();
+            addDownvoteListener();
         }
 
         /* Add a subscription to the signed in user. */
@@ -87,7 +91,7 @@ $(document).ready(function() {
                 contentType: "application/json; charset=utf-8",
                 url: cntxPath+"/AddPerk?userName="+userName+"&subName="+name_sub.val(),
                 dataType:"json",
-                data: JSON.stringify(perkJson )
+                data: JSON.stringify(perkJson)
             });
             /* Update table. */
             GetTable();
@@ -95,6 +99,26 @@ $(document).ready(function() {
         }
         return valid;
     }
+
+    function addUpvoteListener(){
+        if ($('.upvotebutton').length == 0){
+            return;
+        }
+        $('.upvotebutton').click(function(){
+                console.log("upvote");
+            });
+    }
+
+    function addDownvoteListener(){
+        if ($('.downvotebutton').length == 0){
+            return;
+        }
+        $('.downvotebutton').click(function(){
+            console.log("downvote" + $('.downvotebutton').parent().parent().find('#perk_name').text());
+        });
+    }
+
+
 
     /* Set up subscription popup. */
     dialog_sub = $( "#subscription-form" ).dialog({
