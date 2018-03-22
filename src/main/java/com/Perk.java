@@ -94,6 +94,8 @@ public class Perk {
         }
         if ((this.expiryDate==null) ? (p.expiryDate !=null) : !this.expiryDate.equals(p.expiryDate))
             return false;
+        if (this.score!=p.score)
+            return false;
         return true;
     }
 

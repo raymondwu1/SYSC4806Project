@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class PerkController {
@@ -17,13 +14,17 @@ public class PerkController {
 
     private Perk perk;
 
-    @PostMapping(value = "/upvote")
-    public void upvote(@ModelAttribute("perk") Perk perk, Model model){
+    @PostMapping(value = "/upvote",consumes = {"application/json"})
+    public void upvote(@RequestBody Perk perkJson){
+        perk = perkService.findByName(perkJson.getName());
+        perk.upvote();
         perkService.save(perk);
     }
 
-    @PostMapping(value = "/downvote")
-    public void downvote(@ModelAttribute("perk") Perk perk, Model model){
+    @PostMapping(value = "/downvote",consumes = {"application/json"})
+    public void downvote(@RequestBody Perk perkJson){
+        perk = perkService.findByName(perkJson.getName());
+        perk.downvote();
         perkService.save(perk);
     }
 }
