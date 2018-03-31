@@ -80,7 +80,6 @@ public class AjaxController {
         }
     }
 
-
     /*
      * Add perk to a users subscription.
      * @Param: userName=userName of user
@@ -91,12 +90,6 @@ public class AjaxController {
     @RequestMapping(method=RequestMethod.POST, value = "/AddPerk",consumes = {"application/json"})
     public void AddPerk(@RequestParam String userName,@RequestParam String subName,@RequestBody Perk perkJson) {
         user = userService.findByUsername(userName);
-
-        if (!perkService.existsByName(perkJson.getName())){
-            perkService.save(perkJson);
-        }
-
-        Perk newPerk = perkService.findByName(perkJson.getName());
 
         if (subscriptionService.existsByName(subName)) {
             Subscription sub = subscriptionService.findByName(subName);
