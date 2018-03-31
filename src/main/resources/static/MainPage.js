@@ -43,6 +43,7 @@ $(document).ready(function() {
                 }).then(function(data) {
                     $('#InfoTable').append("<tr><th>Subscription</th><th>Perk</th></tr>"+data);
                 });
+
             addUpvoteListener();
             addDownvoteListener();
         }
@@ -104,8 +105,23 @@ $(document).ready(function() {
         if ($('.upvotebutton').length == 0){
             return;
         }
-        $('.upvotebutton').click(function(){
-                console.log("upvote");
+        $('.upvotebutton').click(function(event){
+
+            var subname = $(event.target).parent().parent().find("#subscription_name").text();
+            var perkname = $(event.target).parent().parent().find("#perk_name").text();
+
+            /* Construct JSON and send. This call is not async because the calls to GetTable finishes before this one.  */
+            var perkJson = {"name":perkname,"description":desc_perk.val(),"expiryDate":null,"subscription":null};
+            $.ajax({
+                type:"POST",
+                async:false,
+                contentType: "application/json; charset=utf-8",
+                url: cntxPath+"/upvote?userName="+userName+"&subName="+subname,
+                dataType:"json",
+                data: JSON.stringify(perkJson)
+            });
+            /* Update table. */
+            GetTable();
             });
     }
 
@@ -113,10 +129,38 @@ $(document).ready(function() {
         if ($('.downvotebutton').length == 0){
             return;
         }
-        $('.downvotebutton').click(function(){
-            console.log("downvote" + $('.downvotebutton').parent().parent().find('#perk_name').text());
+        $('.downvotebutton').click(function(event){
+
+            var subname = $(event.target).parent().parent().find("#subscription_name").text();
+            var perkname = $(event.target).parent().parent().find("#perk_name").text();
+
+            /* Construct JSON and send. This call is not async because the calls to GetTable finishes before this one.  */
+            var perkJson = {"name":perkname,"description":desc_perk.val(),"expiryDate":null,"subscription":null};
+            $.ajax({
+                type:"POST",
+                async:false,
+                contentType: "application/json; charset=utf-8",
+                url: cntxPath+"/downvote?userName="+userName+"&subName="+subname,
+                dataType:"json",
+                data: JSON.stringify(perkJson)
+            });
+            /* Update table. */
+            GetTable();
         });
     }
+
+    /**
+    function addDownvoteListener(){
+        if ($('.downvotebutton').length == 0){
+            return;
+        }
+        $('.downvotebutton').click(function(event){
+            var perkname = $(event.target).parent().parent().find("#perk_name").text();
+            console.log("type of subname " + typeof perkname);
+            console.log(perkname);
+        });
+    }
+    **/
 
 
 

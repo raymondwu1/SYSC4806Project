@@ -49,8 +49,8 @@ public class AjaxController {
             for(int n = 0; n < subs.get(i).getPerks().size(); n++) {
                 ret += "<tr><td id = \"subscription_name\">" + subs.get(i).getName() + "</td>" + "<td id = \"perk_name\">" + subs.get(i).getPerks().get(n).getName() + "</td>" +
                         "<td><button class=\"upvotebutton\">Upvote</button></td>" +
-                        "<td><button class=\"downvotebutton\">Downvote</button></td>" + "<td>" +
-                        subs.get(i).getPerks().get(n).getScore() + "</td></tr>";
+                        "<td><button class=\"downvotebutton\">Downvote</button></td>" +
+                        "<td id = \"score_id\">" + subs.get(i).getPerks().get(n).getScore() + "</td></tr>";
             }
         }
 
@@ -121,6 +121,38 @@ public class AjaxController {
             subs.add(subscription.getName());
         }
         return subs;
+    }
+
+    @PostMapping(value = "/upvote",consumes = {"application/json"})
+    public void upvote(@RequestParam String userName,@RequestParam String subName,@RequestBody Perk perkJson) {
+        user = userService.findByUsername(userName);
+
+        Perk tempPerk = perkService.findByName(perkJson.getName());
+
+        if (subscriptionService.existsByName(subName)) {
+            Subscription sub = subscriptionService.findByName(subName);
+            if (sub.getPerks().contains(tempPerk)) {
+                tempPerk.upvote();
+                perkService.save(tempPerk);
+                subscriptionService.save(sub);
+            }
+        }
+    }
+
+    @PostMapping(value = "/downvote",consumes = {"application/json"})
+    public void downvote(@RequestParam String userName,@RequestParam String subName,@RequestBody Perk perkJson) {
+        user = userService.findByUsername(userName);
+
+        Perk tempPerk = perkService.findByName(perkJson.getName());
+
+        if (subscriptionService.existsByName(subName)) {
+            Subscription sub = subscriptionService.findByName(subName);
+            if (sub.getPerks().contains(tempPerk)) {
+                tempPerk.downvote();
+                perkService.save(tempPerk);
+                subscriptionService.save(sub);
+            }
+        }
     }
 
 }

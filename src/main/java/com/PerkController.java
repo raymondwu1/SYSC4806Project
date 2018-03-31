@@ -13,13 +13,14 @@ public class PerkController {
     private PerkService perkService;
 
     private Perk perk;
-
+/**
     @PostMapping(value = "/upvote",consumes = {"application/json"})
     public void upvote(@RequestBody Perk perkJson){
         perk = perkService.findByName(perkJson.getName());
         perk.upvote();
         perkService.save(perk);
     }
+
 
     @PostMapping(value = "/downvote",consumes = {"application/json"})
     public void downvote(@RequestBody Perk perkJson){
@@ -28,4 +29,7 @@ public class PerkController {
         perkService.save(perk);
         //
     }
+    **/
+
+
 }
