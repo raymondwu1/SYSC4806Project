@@ -37,15 +37,15 @@ public class UserController {
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return "registration";
+            return "registrationErrorPage";
         }
 
         else if (userService.findByUsername(userForm.getUsername()) != null) {
-            return "registration";
+            return "registrationErrorPage";
         }
 
         else if (!userForm.getConfirmPassword().equals(userForm.getPassword())) {
-            return "registration";
+            return "registrationErrorPage";
         }
 
         userService.save(userForm);
@@ -61,19 +61,23 @@ public class UserController {
         return "login";
     }
 
+
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String loginEnter(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
         if (!userService.existsByUsername(userForm.getUsername())) {
-            return "login";
+            return "CredentialsErrorPage";
         }
-
         else if (bindingResult.hasErrors()) {
-            return "login";
+            return "CredentialsErrorPage";
         }
 
         user = userService.findByUsername(userForm.getUsername());
-        return "welcome";
+        if (user.getPassword().equals(userForm.getPassword())) {
+            return "welcome";
+        }
+        return "CredentialsErrorPage";
     }
 
     @RequestMapping(value = {"/welcome"}, method = RequestMethod.GET)
@@ -83,5 +87,40 @@ public class UserController {
         }
         return "welcome";
     }
+
+    @RequestMapping(value = "/forgotPassword", method = RequestMethod.GET)
+    public String forgotPassword(Model model){
+        if (!model.containsAttribute("userForm")) {
+            model.addAttribute("userForm", new User());
+        }
+        return "forgotPassword";
+    }
+
+    @RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
+    public String forgotPassword(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
+        userValidator.validate(userForm, bindingResult);
+        user = userService.findByUsername(userForm.getUsername());
+
+        if (bindingResult.hasErrors()) {
+            return "forgotPasswordErrorPage";
+        }
+
+        else if (user == null) {
+            return "forgotPasswordErrorPage";
+        }
+
+        else if (!userForm.getConfirmPassword().equals(userForm.getPassword())) {
+            return "forgotPasswordErrorPage";
+        }
+
+        else if (user.getPassword().equals(userForm.getPassword())) {
+            return "forgotPasswordErrorPage";
+        }
+        user.setPassword(userForm.getPassword());
+
+        userService.save(user);
+        return "welcome";
+    }
+
 
 }
