@@ -122,37 +122,4 @@ public class AjaxController {
         }
         return subs;
     }
-
-    @PostMapping(value = "/upvote",consumes = {"application/json"})
-    public void upvote(@RequestParam String userName,@RequestParam String subName,@RequestBody Perk perkJson) {
-        user = userService.findByUsername(userName);
-
-        Perk tempPerk = perkService.findByName(perkJson.getName());
-
-        if (subscriptionService.existsByName(subName)) {
-            Subscription sub = subscriptionService.findByName(subName);
-            if (sub.getPerks().contains(tempPerk)) {
-                tempPerk.upvote();
-                perkService.save(tempPerk);
-                subscriptionService.save(sub);
-            }
-        }
-    }
-
-    @PostMapping(value = "/downvote",consumes = {"application/json"})
-    public void downvote(@RequestParam String userName,@RequestParam String subName,@RequestBody Perk perkJson) {
-        user = userService.findByUsername(userName);
-
-        Perk tempPerk = perkService.findByName(perkJson.getName());
-
-        if (subscriptionService.existsByName(subName)) {
-            Subscription sub = subscriptionService.findByName(subName);
-            if (sub.getPerks().contains(tempPerk)) {
-                tempPerk.downvote();
-                perkService.save(tempPerk);
-                subscriptionService.save(sub);
-            }
-        }
-    }
-
 }

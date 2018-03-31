@@ -11,7 +11,6 @@ $(document).ready(function() {
             sub_perk = $( "#sub_perk" ),
             desc_perk = $( "#desc_perk" )
 
-
         $.ajax({
             url: cntxPath+"/GetSubs?userName="+userName
         }).then(function(data) {
@@ -31,7 +30,6 @@ $(document).ready(function() {
                 return true;
             }
         }
-
 
         /* Get the subscription table in the mainpage. */
         function GetTable() {
@@ -78,7 +76,6 @@ $(document).ready(function() {
         /* Add perk for the subscription. */
     function addPerk() {
         var valid = true;
-
         valid = valid && checkLength( name_perk, 3 );
         valid = valid && checkLength( sub_perk, 3 );
         valid = valid && checkLength( desc_perk, 3 );
@@ -148,21 +145,6 @@ $(document).ready(function() {
             GetTable();
         });
     }
-
-    /**
-    function addDownvoteListener(){
-        if ($('.downvotebutton').length == 0){
-            return;
-        }
-        $('.downvotebutton').click(function(event){
-            var perkname = $(event.target).parent().parent().find("#perk_name").text();
-            console.log("type of subname " + typeof perkname);
-            console.log(perkname);
-        });
-    }
-    **/
-
-
 
     /* Set up subscription popup. */
     dialog_sub = $( "#subscription-form" ).dialog({
