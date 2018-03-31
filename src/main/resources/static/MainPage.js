@@ -7,11 +7,9 @@ $(document).ready(function() {
         var dialog_sub,dialog_perk, form,
 
             name_sub = $( "#name_sub" ),
-            code_perk = $( "#code_perk" ),
+            name_perk = $( "#name_perk" ),
             sub_perk = $( "#sub_perk" ),
-            desc_perk = $( "#desc_perk" ),
-            exp_perk = $( "#exp_perk" );
-
+            desc_perk = $( "#desc_perk" )
 
         $.ajax({
             url: cntxPath+"/GetSubs?userName="+userName
@@ -27,22 +25,25 @@ $(document).ready(function() {
     /* Make sure they aren't pushing at least 3 chars. */
         function checkLength( o, min ) {
             if ( o.val().length < min ) {
-                alert("Invalid input")
                 return false;
             } else {
                 return true;
             }
         }
 
-
         /* Get the subscription table in the mainpage. */
         function GetTable() {
+
                 $('#InfoTable').empty();
                 $.ajax({
+                    async:false,
                     url: cntxPath+"/GetTable?userName="+userName
                 }).then(function(data) {
                     $('#InfoTable').append("<tr><th>Subscription</th><th>Perk Code</th><th>Perk Description</th><th>Expiry Date</th></tr>"+data);
                 });
+
+            addUpvoteListener();
+            addDownvoteListener();
         }
 
         /* Add a subscription to the signed in user. */
@@ -60,7 +61,6 @@ $(document).ready(function() {
                 var subscriptionJson = {"name":name_sub.val(),"perks":null,"fee":0};
                 $.ajax({
                     type:"POST",
-                    async:false,
                     contentType: "application/json; charset=utf-8",
                     url: cntxPath+"/AddSubscription?userName="+userName,
                     dataType:"json",
@@ -76,8 +76,7 @@ $(document).ready(function() {
         /* Add perk for the subscription. */
     function addPerk() {
         var valid = true;
-
-        valid = valid && checkLength( code_perk, 3 );
+        valid = valid && checkLength( name_perk, 3 );
         valid = valid && checkLength( sub_perk, 3 );
         valid = valid && checkLength( desc_perk, 3 );
         valid = valid && checkLength( exp_perk, 10 );
@@ -91,13 +90,61 @@ $(document).ready(function() {
                 contentType: "application/json; charset=utf-8",
                 url: cntxPath+"/AddPerk?userName="+userName+"&subName="+name_sub.val(),
                 dataType:"json",
-                data: JSON.stringify(perkJson )
+                data: JSON.stringify(perkJson)
             });
             /* Update table. */
             GetTable();
             dialog_perk.dialog( "close" );
         }
         return valid;
+    }
+
+    function addUpvoteListener(){
+        if ($('.upvotebutton').length == 0){
+            return;
+        }
+        $('.upvotebutton').click(function(event){
+
+            var subname = $(event.target).parent().parent().find("#subscription_name").text();
+            var perkname = $(event.target).parent().parent().find("#perk_name").text();
+
+            /* Construct JSON and send. This call is not async because the calls to GetTable finishes before this one.  */
+            var perkJson = {"name":perkname,"description":desc_perk.val(),"expiryDate":null,"subscription":null};
+            $.ajax({
+                type:"POST",
+                async:false,
+                contentType: "application/json; charset=utf-8",
+                url: cntxPath+"/upvote?userName="+userName+"&subName="+subname,
+                dataType:"json",
+                data: JSON.stringify(perkJson)
+            });
+            /* Update table. */
+            GetTable();
+            });
+    }
+
+    function addDownvoteListener(){
+        if ($('.downvotebutton').length == 0){
+            return;
+        }
+        $('.downvotebutton').click(function(event){
+
+            var subname = $(event.target).parent().parent().find("#subscription_name").text();
+            var perkname = $(event.target).parent().parent().find("#perk_name").text();
+
+            /* Construct JSON and send. This call is not async because the calls to GetTable finishes before this one.  */
+            var perkJson = {"name":perkname,"description":desc_perk.val(),"expiryDate":null,"subscription":null};
+            $.ajax({
+                type:"POST",
+                async:false,
+                contentType: "application/json; charset=utf-8",
+                url: cntxPath+"/downvote?userName="+userName+"&subName="+subname,
+                dataType:"json",
+                data: JSON.stringify(perkJson)
+            });
+            /* Update table. */
+            GetTable();
+        });
     }
 
     /* Set up subscription popup. */
