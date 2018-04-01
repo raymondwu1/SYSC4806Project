@@ -28,9 +28,9 @@ public class Perk {
         this.score = 0;
     }
 
-    public Perk(String name, String description, Subscription sub)
+    public Perk(String code, String description, Subscription sub)
     {
-        this.name = name;
+        this.code = code;
         this.description = description;
         this.subscription = sub;
         this.score = 0;

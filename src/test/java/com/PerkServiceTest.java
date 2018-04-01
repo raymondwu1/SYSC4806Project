@@ -38,13 +38,13 @@ public class PerkServiceTest {
 
     @Test
     public void findByName() throws Exception {
-        Perk found = perkService.findByName("testPerk");
+        Perk found = perkService.findByCode("testPerk");
         assertEquals(found.getCode(), "testPerk");
     }
 
     @Test
     public void existsByName() throws Exception {
-        assertTrue(perkService.existsByName("testPerk"));
+        assertTrue(perkService.existsByCode("testPerk"));
     }
 
 }

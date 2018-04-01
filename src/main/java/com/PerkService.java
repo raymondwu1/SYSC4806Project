@@ -18,12 +18,12 @@ public class PerkService {
         perkRepository.delete(perk);
     }
 
-    public Perk findByName(String code){
+    public Perk findByCode(String code){
         return perkRepository.findByCode(code);
     }
 
 
-    public boolean existsByName(String code){
+    public boolean existsByCode(String code){
         return perkRepository.existsByCode(code);
     }
 
