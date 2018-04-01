@@ -32,19 +32,19 @@ public class PerkServiceTest {
     @Before
     public void setUp() throws Exception {
         Perk perk = new Perk("testPerk", "test desc");
-        Mockito.when(perkRepository.findByName(perk.getName())).thenReturn(perk);
-        Mockito.when(perkRepository.existsByName(perk.getName())).thenReturn(true);
+        Mockito.when(perkRepository.findByCode(perk.getCode())).thenReturn(perk);
+        Mockito.when(perkRepository.existsByCode(perk.getCode())).thenReturn(true);
     }
 
     @Test
     public void findByName() throws Exception {
-        Perk found = perkService.findByName("testPerk");
-        assertEquals(found.getName(), "testPerk");
+        Perk found = perkService.findByCode("testPerk");
+        assertEquals(found.getCode(), "testPerk");
     }
 
     @Test
     public void existsByName() throws Exception {
-        assertTrue(perkService.existsByName("testPerk"));
+        assertTrue(perkService.existsByCode("testPerk"));
     }
 
 }

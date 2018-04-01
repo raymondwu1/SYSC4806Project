@@ -23,7 +23,7 @@
     </div>
     <table id="InfoTable" align="center" cellpadding="20">
         <tbody>
-            <tr><th>Subscription</th><th>Perk</th></tr>
+            <tr><th>Subscription</th><th>Perk Code</th><th>Perk Description</th><th>Expiry Date</th></tr>
         </tbody>
     </table>
     <a href="/home">Sign out</a>
@@ -40,11 +40,13 @@
     <div id="perk-form" title="Add Perk">
         <form>
             <fieldset>
-                <label for="name_perk">Name</label>
-                <input type="text" name="name" id="name_perk"/>
-                <label for="name_perk">Description</label>
+                <label for="code_perk">Name</label>
+                <input type="text" name="name" id="code_perk"/>
+                <label for="desc_perk">Description</label>
                 <input type="text" name="desc" id="desc_perk"/>
-                <label for="name_perk">Subscription</label>
+                <label for="exp_perk">Expiry Date</label>
+                <input type="date" name="exp" id="exp_perk"/>
+                <label for="sub_perk">Subscription</label>
                 <select name="sub" id="sub_perk">
                 </select>
                 <input type="submit" value="AddPerk" tabindex="-1" style="position:absolute; top:-1000px"/>

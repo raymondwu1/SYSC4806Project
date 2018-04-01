@@ -13,7 +13,7 @@ public class Perk {
     /* Perk fields */
     @Id
     @Column(unique=true)
-    private String name;
+    private String code;
     private String description;
     private int score;
     @ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
@@ -21,26 +21,25 @@ public class Perk {
     private java.util.Date expiryDate;
 
     /* Constructors */
-    public Perk(String name, String description, java.util.Date expiryDate)
-    {
-        this.name = name;
+    public Perk(String code, String description, java.util.Date expiryDate) {
+        this.code = code;
         this.description = description;
         this.expiryDate = expiryDate;
         this.score = 0;
     }
 
-    public Perk(String name, String description, Subscription sub)
+    public Perk(String code, String description, Subscription sub)
     {
-        this.name = name;
+        this.code = code;
         this.description = description;
         this.subscription = sub;
         this.score = 0;
     }
 
     /* We need at least  a name and description to make a perk, default expiry is never. */
-    public Perk(String name, String description)
-    {
-        this.name = name;
+
+    public Perk(String code, String description) {
+        this.code = code;
         this.description = description;
     }
 
@@ -50,12 +49,12 @@ public class Perk {
 
     /* Getters & Setters */
 
-    public String getName() {
-        return name;
+    public String getCode() {
+        return code;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCode(String name) {
+        this.code = name;
     }
 
     public String getDescription() {
@@ -86,7 +85,7 @@ public class Perk {
             return false;
         }
         Perk p = (Perk) o;
-        if ((this.name==null) ? (p.name !=null) : !this.name.equals(p.name)){
+        if ((this.code ==null) ? (p.code !=null) : !this.code.equals(p.code)){
             return false;
         }
         if ((this.description==null) ? (p.description !=null) : !this.description.equals(p.description)) {

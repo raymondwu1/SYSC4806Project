@@ -23,7 +23,7 @@ public class PerkController {
     public void upvote(@RequestParam String userName,@RequestParam String subName,@RequestBody Perk perkJson) {
         user = userService.findByUsername(userName);
 
-        Perk tempPerk = perkService.findByName(perkJson.getName());
+        Perk tempPerk = perkService.findByCode(perkJson.getCode());
 
         if (subscriptionService.existsByName(subName)) {
             Subscription sub = subscriptionService.findByName(subName);
@@ -39,7 +39,7 @@ public class PerkController {
     public void downvote(@RequestParam String userName,@RequestParam String subName,@RequestBody Perk perkJson) {
         user = userService.findByUsername(userName);
 
-        Perk tempPerk = perkService.findByName(perkJson.getName());
+        Perk tempPerk = perkService.findByCode(perkJson.getCode());
 
         if (subscriptionService.existsByName(subName)) {
             Subscription sub = subscriptionService.findByName(subName);
