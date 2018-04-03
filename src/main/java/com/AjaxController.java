@@ -51,8 +51,8 @@ public class AjaxController {
                 ret += "<tr><td id = \"subscription_name\">" + subs.get(i).getName() + "</td>" + "<td id = \"perk_name\">" + subs.get(i).getPerks().get(n).getCode() + "</td>"+
                         "<td>" + subs.get(i).getPerks().get(n).getDescription() + "</td>"+
                         "<td>" + new SimpleDateFormat("yyyy-MM-dd").format(subs.get(i).getPerks().get(n).getExpiryDate()) + "</td>" +
-                        "<td><button class=\"upvotebutton\">Upvote</button></td>" +
-                        "<td><button class=\"downvotebutton\">Downvote</button></td>" +
+                        "<td><button class=\"upvotebutton btn btn-info\">Upvote</button></td>" +
+                        "<td><button class=\"downvotebutton btn btn-danger\">Downvote</button></td>" +
                         "<td id = \"score_id\">" + subs.get(i).getPerks().get(n).getScore() + "</td></tr>";
             }
         }
