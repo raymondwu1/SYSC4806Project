@@ -42,11 +42,20 @@ $(document).ready(function() {
                     async:false,
                     url: cntxPath+"/GetTable?userName="+userName
                 }).then(function(data) {
-                    $('#InfoTable').append("<tr><th>Subscription</th><th>Perk Code</th><th>Perk Description</th><th>Expiry Date</th><th></th><th></th><th></th></tr>"+data);
+                    $('#InfoTable').append("<tr>" +
+                        "<th id='sub_header'>Subscription</th>" +
+                        "<th id='perk_header'>Perk Code</th>" +
+                        "<th id='desc_header'>Perk Description</th>" +
+                        "<th id='exp_header'>Expiry Date</th>" +
+                        "<th></th>" +
+                        "<th></th>" +
+                        "<th id='votes_header'>Votes</th>" +
+                        "</tr>"+data);
                 });
 
             addUpvoteListener();
             addDownvoteListener();
+            sortTable();
         }
 
         /* Add a subscription to the signed in user. */
@@ -149,6 +158,44 @@ $(document).ready(function() {
             /* Update table. */
             GetTable();
         });
+    }
+
+    function sortBySub() {
+        $('#sub_header').click(function (event) {
+            console.log($(event.target).text());
+        });
+    }
+
+    function sortByPerk() {
+        $('#perk_header').click(function (event) {
+            console.log($(event.target).text());
+        });
+    }
+
+    function sortByDesc() {
+        $('#desc_header').click(function (event) {
+            console.log($(event.target).text());
+        });
+    }
+
+    function sortByExp() {
+        $('#exp_header').click(function (event) {
+            console.log($(event.target).text());
+        });
+    }
+
+    function sortByVotes() {
+        $('#votes_header').click(function (event) {
+            console.log($(event.target).text());
+        });
+    }
+
+    function sortTable() {
+        sortBySub();
+        sortByPerk();
+        sortByDesc();
+        sortByExp();
+        sortByVotes();
     }
 
     /* Set up subscription popup. */
