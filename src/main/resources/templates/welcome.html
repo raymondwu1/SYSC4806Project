@@ -4,7 +4,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Registration</title>
     <link id="contextPathHolder" data-contextPath="${pageContext.request.contextPath}"/>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" />
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="MainPage.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
@@ -12,22 +20,44 @@
         label, input { display:block; }
         input.text { margin-bottom:12px; width:95%; padding: .4em; }
         fieldset { padding:0; border:0; margin-top:25px; }
+        a.navbar-brand.title{
+            color: blue;
+        }
     </style>
 </head>
 <body>
-    <h1>Welcome</h1>
-    <p id="userNameLabel" th:text="'username: ' + ${userForm.username}" />
+<nav class="navbar navbar-default">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <a class="navbar-brand title">Welcome to the PerkManager!</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="navbar_items">
+            <ul class="nav navbar-nav">
+                <li><a id="userNameLabel" th:text="'username: ' + ${userForm.username}"></a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/home"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<!-- Bootstrap container class will put a margin around the page. -->
+<div class="container">
+    <br/>
     <div align="right" >
-        <button id="AddSubscription"> Add Subscription </button>
-        <button id="AddPerk"> Add Perk </button>
+        <button id="AddSubscription" class="btn btn-primary"> Add Subscription </button>
+        <button id="AddPerk" class="btn btn-primary"> Add Perk </button>
     </div>
-    <table id="InfoTable" align="center" cellpadding="20">
+    <br/>
+    <table id="InfoTable" align="center" cellpadding="20" class ="table table-hover">
         <tbody>
-            <tr><th>Subscription</th><th>Perk Code</th><th>Perk Description</th><th>Expiry Date</th></tr>
+            <tr><th>Subscription</th><th>Perk Code</th><th>Perk Description</th><th>Expiry Date</th><th></th><th></th><th></th></tr>
         </tbody>
     </table>
-    <a href="/home">Sign out</a>
-
     <div id="subscription-form" title="Add Subscription">
         <form>
             <fieldset>
@@ -36,6 +66,8 @@
                 <input type="submit" value="AddSubscription" tabindex="-1" style="position:absolute; top:-1000px"/>
             </fieldset>
         </form>
+        <div class="alert alert-warning">
+            Invalid Input</div>
     </div>
     <div id="perk-form" title="Add Perk">
         <form>
@@ -52,6 +84,9 @@
                 <input type="submit" value="AddPerk" tabindex="-1" style="position:absolute; top:-1000px"/>
             </fieldset>
         </form>
+        <div class="alert alert-warning">
+            Invalid Input</div>
     </div>
-</body>
+</div>
+   </body>
 </html>

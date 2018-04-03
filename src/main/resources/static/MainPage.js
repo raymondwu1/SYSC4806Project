@@ -4,6 +4,7 @@ $(document).ready(function() {
         var subs = $("#sub_perk").get(0);//This should be changed to an ajax call to the db.
         var cntxPath = window.location.protocol+ "//" + window.location.host;
         var userName = $("#userNameLabel").text().replace("username: ","");
+
         var dialog_sub,dialog_perk, form,
 
             name_sub = $( "#name_sub" ),
@@ -26,7 +27,7 @@ $(document).ready(function() {
     /* Make sure they aren't pushing at least 3 chars. */
         function checkLength( o, min ) {
             if ( o.val().length < min ) {
-                alert("invalid input");
+                showWarnings();
                 return false;
             } else {
                 return true;
@@ -41,7 +42,7 @@ $(document).ready(function() {
                     async:false,
                     url: cntxPath+"/GetTable?userName="+userName
                 }).then(function(data) {
-                    $('#InfoTable').append("<tr><th>Subscription</th><th>Perk Code</th><th>Perk Description</th><th>Expiry Date</th></tr>"+data);
+                    $('#InfoTable').append("<tr><th>Subscription</th><th>Perk Code</th><th>Perk Description</th><th>Expiry Date</th><th></th><th></th><th></th></tr>"+data);
                 });
 
             addUpvoteListener();
@@ -173,6 +174,7 @@ $(document).ready(function() {
         });
         /* open popup. */
         $( "#AddSubscription" ).click( function() {
+            hideWarnings();
             dialog_sub.dialog( "open" );
         });
 
@@ -199,8 +201,32 @@ $(document).ready(function() {
     });
     /* open popup. */
     $( "#AddPerk" ).click( function() {
+        hideWarnings();
         dialog_perk.dialog( "open" );
     });
+
+    var warningsVisible = true;
+    function showWarnings()
+    {
+        if(!warningsVisible)
+        {
+            $(".alert").each(function() {
+                $(this).toggle();
+            });
+            warningsVisible = true;
+        }
+    }
+
+    function hideWarnings()
+    {
+        if(warningsVisible)
+        {
+            $(".alert").each(function() {
+                $(this).toggle();
+            });
+            warningsVisible = false;
+        }
+    }
 
     /* Populate table initially. */
     GetTable();
