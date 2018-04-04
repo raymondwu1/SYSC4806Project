@@ -27,6 +27,7 @@
         }
         .search-container {
             float: left;
+            padding: 18px;
         }
         .search-container input[type=text]{
             float: left;
@@ -35,15 +36,15 @@
             font-size: 17px;
         }
         .search-container button {
-            padding: 6px;
             margin-top: 8px;
+            padding: 6px;
             margin-right: 16px;
             font-size: 17px;
             cursor: pointer;
         }
         span.btn.btn-danger.delete-button
         {
-            align:right
+            align:right;
         }
     </style>
 </head>
@@ -67,16 +68,15 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-<div class="search-container">
-    <form>
-        <input type="text" placeholder="Search for perks..." name="search"/>
-        <button id="SearchPerks" class="btn btn-primary">Search</button>
-    </form>
-</div>
-
 <!-- Bootstrap container class will put a margin around the page. -->
 <div class="tablecontainer">
     <br/>
+    <div class="search-container">
+        <form>
+            <input type="text" placeholder="Search for perks..." name="search"/>
+            <button id="SearchPerks" class="btn btn-primary">Search</button>
+        </form>
+    </div>
     <div align="right">
         <button id="FilterPerks" class="btn btn-primary"> Filter </button>
         <button id="AddSubscription" class="btn btn-primary"> Add Subscription </button>
