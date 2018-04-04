@@ -104,6 +104,42 @@ public class AjaxController {
     }
 
     /*
+     * Populate the table with all available perks
+     * @Param: subscription name
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method=RequestMethod.GET, value = "/NamePopulation")
+    public String PopulateGivenSubname(@RequestParam String subName){
+        String ret = "";
+        if(subscriptionService.existsByName(subName)){
+            Subscription s = subscriptionService.findByName(subName);
+            for(Perk p : s.getPerks()){
+                ret += "<tr><td id = \"subscription_name\">" + subName + "</td>" + "<td id = \"perk_name\">" + p.getCode() + "</td>"+
+                        "<td>" + p.getDescription() + "</td>"+
+                        "<td>" + new SimpleDateFormat("yyyy-MM-dd").format(p.getExpiryDate()) + "</td>" +
+                        "<td id = \"score_id\">" + p.getScore() + "</td></tr>";
+            }
+        }
+        return ret;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method=RequestMethod.GET, value = "/GeneralPopulation")
+    public String HomeTableInitial(){
+        String ret = "";
+        Iterable<Subscription> subs = subscriptionService.findAll();
+        for(Subscription s : subs) {
+            for (Perk p : s.getPerks()) {
+                ret += "<tr><td id = \"subscription_name\">" + s.getName() + "</td>" + "<td id = \"perk_name\">" + p.getCode() + "</td>" +
+                        "<td>" + p.getDescription() + "</td>" +
+                        "<td>" + new SimpleDateFormat("yyyy-MM-dd").format(p.getExpiryDate()) + "</td>" +
+                        "<td id = \"score_id\">" + p.getScore() + "</td></tr>";
+            }
+        }
+        return ret;
+    }
+
+    /*
     * Return a list of subscription names for a user
     * @Param: userName = name of user
     * @Ret: List of subscription names
