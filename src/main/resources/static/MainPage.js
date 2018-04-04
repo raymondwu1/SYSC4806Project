@@ -21,6 +21,8 @@ $(document).ready(function() {
                 var option = document.createElement("option");
                 option.text = data[i];
                 subs.add(option);
+                $('#ActiveSubscriptions').append('<li class=\"list-group-item d-flex justify-content-between align-items-center\"><span id="subscription_name">'+data[i]+'</span> <span class=\"btn btn-danger delete-btn\">Delete</span></li>');
+                AddDeleteSubscriptionListener();
             }
         });
 
@@ -72,6 +74,11 @@ $(document).ready(function() {
                 });
                 /* Update table. */
                 GetTable();
+                if($('#ActiveSubscriptions span:contains('+name_sub.val()+')').length == 0)
+                {
+                    $('#ActiveSubscriptions').append('<li class=\"list-group-item d-flex justify-content-between align-items-center\"><span id="subscription_name">'+name_sub.val()+'</span> <span class=\"btn btn-danger delete-btn\">Delete</span></li>');
+                    AddDeleteSubscriptionListener();
+                }
                 dialog_sub.dialog( "close" );
             }
             return valid;
@@ -147,6 +154,26 @@ $(document).ready(function() {
                 data: JSON.stringify(perkJson)
             });
             /* Update table. */
+            GetTable();
+        });
+    }
+
+    function AddDeleteSubscriptionListener(){
+        if ($('.delete-btn').length == 0){
+            return;
+        }
+        $('.delete-btn').click(function(){
+
+            var subname = $(this).parent().find("#subscription_name").text();
+            /* Construct JSON and send. This call is not async because the calls to GetTable finishes before this one.  */
+            $.ajax({
+                type:"DELETE",
+                async:false,
+                contentType: "application/json; charset=utf-8",
+                url: cntxPath+"/DeleteSub?userName="+userName+"&subName="+subname,
+                dataType:"json"
+            });
+            $(this).parent().remove();
             GetTable();
         });
     }
