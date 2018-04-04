@@ -40,13 +40,14 @@ public class AjaxControllerTest {
 
     private User user;
     private Perk perk;
-    private Subscription sub;
+    private Subscription sub, sub2;
 
     private String username = "Test";
     private String pass = "pass";
     private String namePerk = "half off test";
     private String description = "This is a test";
     private String nameSub = "testVisa";
+    private String nameSub2 = "passVisa";
     private String fee = "once a month";
     private java.util.Date expiryDate =  new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime();
 
@@ -58,6 +59,7 @@ public class AjaxControllerTest {
         perk = new Perk(namePerk, description);
         perk.setExpiryDate(expiryDate);
         sub = new Subscription(nameSub,fee);
+        sub2 = new Subscription(nameSub2,fee);
     }
 
     /* Clear objects and remove user from repository. */
@@ -91,14 +93,14 @@ public class AjaxControllerTest {
     @Test
     public void testHomeTableInitial() throws Exception{
         /* Add perk and subscription to user. */
-        sub.addPerk(perk);
-        user.addSubscription(sub);
+        sub2.addPerk(perk);
+        user.addSubscription(sub2);
         userService.save(user);
         /* Make call. */
         MvcResult result = mvc.perform(get("/GeneralPopulation")).andExpect(status().isOk()).andReturn();
         String content = result.getResponse().getContentAsString();
         /* Verify the table returns the sub and perk name. */
-        assert(content.contains(sub.getName()));
+        assert(content.contains(sub2.getName()));
         assert(content.contains(perk.getCode()));
         assert(content.contains(new SimpleDateFormat("yyyy-MM-dd").format(expiryDate)));
         assert (!content.contains("class=\"upvotebutton"));
