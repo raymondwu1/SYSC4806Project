@@ -22,6 +22,10 @@
         label, input { display:block; }
         input.text { margin-bottom:12px; width:95%; padding: .4em; }
         fieldset { padding:0; border:0; margin-top:25px; }
+        input.radio{
+            display:inline;
+        }
+
         a.navbar-brand.title{
             color: blue;
         }
@@ -69,23 +73,30 @@
 </nav>
 
 <!-- Bootstrap container class will put a margin around the page. -->
-<div class="tablecontainer">
+<div class="container">
     <br/>
     <div class="search-container">
-        <form>
-            <input type="text" placeholder="Search for perks..." name="search"/>
-            <button id="SearchPerks" class="btn btn-primary">Search</button>
-        </form>
+        <input type="text" placeholder="Search for perks..." name="search"/>
+        <button id="SearchPerks" class="btn btn-primary">Search</button>
     </div>
     <div align="right">
-        <button id="FilterPerks" class="btn btn-primary"> Filter </button>
-        <button id="AddSubscription" class="btn btn-primary"> Add Subscription </button>
-        <button id="AddPerk" class="btn btn-primary"> Add Perk </button>
         <div class="checkbox">
             <label>
                 <input type="checkbox" data-toggle="toggle" data-onstyle="success"/>
                 View All Subscriptions
             </label>
+        </div>
+        <button id="AddSubscription" class="btn btn-primary"> Add Subscription </button>
+        <button id="AddPerk" class="btn btn-primary"> Add Perk </button>
+        <div class="filter">
+            <form>
+                <label>
+                Sort By:
+                <input type="radio" name="filter" class="radio" value="upvote" > Upvote </input>
+                <input type="radio" name="filter" class="radio" value="downvote"> Downvote </input>
+                <input type="radio" name="filter" class="radio" value="expiry" checked="true"> Expiry </input>
+                </label>
+            </form>
         </div>
     </div>
     <br/>
@@ -102,7 +113,7 @@
             <tr><th>Subscription</th><th>Perk Code</th><th>Perk Description</th><th>Expiry Date</th><th></th><th></th><th></th></tr>
         </tbody>
     </table>
-</div>
+    </div>
     <div id="subscription-form" title="Add Subscription">
         <form>
             <fieldset>
