@@ -23,6 +23,22 @@
         a.navbar-brand.title{
             color: blue;
         }
+        .search-container {
+            float: left;
+        }
+        .search-container input[type=text]{
+            float: left;
+            padding: 6px;
+            margin-top: 8px;
+            font-size: 17px;
+        }
+        .search-container button {
+            padding: 6px;
+            margin-top: 8px;
+            margin-right: 16px;
+            font-size: 17px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -45,10 +61,18 @@
     </div><!-- /.container-fluid -->
 </nav>
 
+<div class="search-container">
+    <form>
+        <input type="text" placeholder="Search for perks..." name="search"/>
+        <button id="SearchPerks" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
 <!-- Bootstrap container class will put a margin around the page. -->
-<div class="container">
+<div class="tablecontainer">
     <br/>
-    <div align="right" >
+    <div align="right">
+        <button id="FilterPerks" class="btn btn-primary"> Filter </button>
         <button id="AddSubscription" class="btn btn-primary"> Add Subscription </button>
         <button id="AddPerk" class="btn btn-primary"> Add Perk </button>
     </div>
