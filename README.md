@@ -31,5 +31,4 @@ The objective of the project is to create a web application for a perk manager s
 ## Project Milestone 3 Goals
  - A user can remove a subscription and have the table dynamically be updated
  - A user can search for perks based on proximity to expiry date
- - Add limitations to perks based on geographic area and in time
  - User can search for perks 
