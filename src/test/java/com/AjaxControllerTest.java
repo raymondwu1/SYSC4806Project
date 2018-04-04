@@ -88,6 +88,25 @@ public class AjaxControllerTest {
         assert(content.contains(new SimpleDateFormat("yyyy-MM-dd").format(expiryDate)));
     }
 
+    @Test
+    public void testHomeTableInitial() throws Exception{
+        /* Add perk and subscription to user. */
+        sub.addPerk(perk);
+        user.addSubscription(sub);
+        userService.save(user);
+        /* Make call. */
+        MvcResult result = mvc.perform(get("/GeneralPopulation")).andExpect(status().isOk()).andReturn();
+        String content = result.getResponse().getContentAsString();
+        /* Verify the table returns the sub and perk name. */
+        assert(content.contains(sub.getName()));
+        assert(content.contains(perk.getCode()));
+        assert(content.contains(new SimpleDateFormat("yyyy-MM-dd").format(expiryDate)));
+        assert (!content.contains("class=\"upvotebutton"));
+        assert (!content.contains("class=\"downvotebutton"));
+
+
+    }
+
     /* Test AddSubscription method */
     @Test
     public void testAddSubscription() throws Exception {

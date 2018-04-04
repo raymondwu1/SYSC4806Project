@@ -7,7 +7,7 @@ $(document).ready(function() {
     //var subs = $("#sub_perk").get(0);//This should be changed to an ajax call to the db.
     var cntxPath = window.location.protocol + "//" + window.location.host;
 
-    var form, subscription;
+    var form, subscription = $("#sub_name");
 
 
     /* Get the subscription table in the mainpage. */
@@ -16,52 +16,63 @@ $(document).ready(function() {
         $('#PerksTable').empty();
         $.ajax({
             async:false,
-            url: cntxPath+"/GetTable"
+            url: cntxPath+"/GetTable?"
         }).then(function(data) {
             $('#PerksTable').append("<tr><th>Perk Code</th><th>Perk Description</th><th>Expiry Date</th><th></th><th></th><th></th></tr>"+data);
         });
 
     }
 
-    function validate() {
-        
-    }
-
-    function Search(input) {
-        /* We want to use the subscription name to findAll available perks and populate the table */
-
-        var perks = [];
-
-        //Initialize subscription service
-        var subService = new Packages.com.SubscriptionService();
-
-        //Check if subscription name exists
-        if(subService.existsByName(input)){
-            //Find all associated perks
-            perks = subService.getPerks();
-            for(var i=0;i < perks.length;i++)
-            {
-                var perkJson = {"code":perks[i].getCode(),"description":perks[i].getDescription(),"expiryDate":perks[i].getDescription()};
-                $.ajax({
-                    type:"POST",
-                    async:false,
-                    contentType: "application/json; charset=utf-8",
-                    url: cntxPath+"/Search",
-                    dataType:"json",
-                    data: JSON.stringify(perkJson)
-                });
-                //Update table
-                GetTable();
-            }
+    /* Make sure they aren't pushing at least 3 chars. */
+    function checkLength( o, min ) {
+        if ( o.val().length < min ) {
+            showWarnings();
+            return false;
+        } else {
+            return true;
         }
-
-
-
     }
 
-    $("#Search").click(function(){
-        subscription = $("#sub_name").text();
-        Search(subscription);
+    function getSubscriptions(){
+        $.ajax({
+            url: cntxPath+"/GetSubs?userName="+userName
+        })
+    }
+
+    function showWarnings()
+    {
+        if(!warningsVisible)
+        {
+            $(".alert").each(function() {
+                $(this).toggle();
+            });
+            warningsVisible = true;
+        }
+    }
+
+    function hideWarnings()
+    {
+        if(warningsVisible)
+        {
+            $(".alert").each(function() {
+                $(this).toggle();
+            });
+            warningsVisible = false;
+        }
+    }
+
+    // $("#Search").click(function(){
+    //     Search();
+    // });
+
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: cntxPath+"/GeneralPopulation",
+    }).then(function(data) {
+        //$('#PerksTable').append("<tr><th>Subscription</th><th>Perk Code</th><th>Perk Description</th><th>Expiry Date</th><th></th><th></th><th></th></tr>"+data);
+         $('#PerksTable').append(""+data);
+
     });
 
 });

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Registration</title>
+    <title>Welcome</title>
     <link id="contextPathHolder" data-contextPath="${pageContext.request.contextPath}"/>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
@@ -39,7 +39,6 @@
                 <li><a id="userNameLabel" th:text="'username: ' + ${userForm.username}"></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/SearchPage"><span class="glyphicon glyphicon-search"></span> See recommended perks</a></li>
                 <li><a href="/home"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
