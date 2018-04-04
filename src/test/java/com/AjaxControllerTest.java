@@ -132,6 +132,17 @@ public class AjaxControllerTest {
         assert(content.contains(sub.getName()));
     }
 
+    /* Test DeleteSub method */
+    @Test
+    public void testDeleteSub() throws Exception {
+        user.addSubscription(sub);
+        userService.save(user);
+        MvcResult result = mvc.perform(delete("/DeleteSub").param("userName", user.getUsername()).param("subName", sub.getName())).andExpect(status().isOk()).andReturn();
+        User temp = userService.findByUsername(user.getUsername());
+        /* Verify the table returns the sub and perk name. */
+        assert(!temp.getSubscriptions().contains(sub));
+    }
+
     /* Helper method that converts an object to json. */
     public static String asJsonString(final Object obj) {
         try {
