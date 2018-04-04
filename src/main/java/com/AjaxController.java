@@ -118,4 +118,26 @@ public class AjaxController {
         }
         return subs;
     }
+
+    /*
+     * Delete a subscription for a user
+     * @Param: userName = name of user
+     * @Param: subName = name of subscription
+     * */
+    @RequestMapping(method=RequestMethod.DELETE, value = "/DeleteSub")
+    public void DeleteSub(@RequestParam String userName,@RequestParam String subName)
+    {
+        user = userService.findByUsername(userName);
+        Subscription temp = null;
+        for (Subscription subscription : user.getSubscriptions()) {
+            if(subscription.getName().equals(subName))
+            {
+                temp = subscription;
+            }
+        }
+        if(temp != null) {
+            user.removeSubscription(temp);
+            userService.save(user);
+        }
+    }
 }
