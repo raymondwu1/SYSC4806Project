@@ -33,38 +33,6 @@ $(document).ready(function() {
         }
     }
 
-    function getSubscriptions(){
-        $.ajax({
-            url: cntxPath+"/GetSubs?userName="+userName
-        })
-    }
-
-    function showWarnings()
-    {
-        if(!warningsVisible)
-        {
-            $(".alert").each(function() {
-                $(this).toggle();
-            });
-            warningsVisible = true;
-        }
-    }
-
-    function hideWarnings()
-    {
-        if(warningsVisible)
-        {
-            $(".alert").each(function() {
-                $(this).toggle();
-            });
-            warningsVisible = false;
-        }
-    }
-
-    // $("#Search").click(function(){
-    //     Search();
-    // });
-
     $.ajax({
         type: "GET",
         async: false,
