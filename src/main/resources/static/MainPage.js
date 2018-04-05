@@ -123,7 +123,7 @@ $(document).ready(function() {
                 type:"POST",
                 async:false,
                 contentType: "application/json; charset=utf-8",
-                url: cntxPath+"/AddPerk?userName="+userName+"&subName="+name_sub.val(),
+                url: cntxPath+"/AddPerk?userName="+userName+"&subName="+sub_perk.val(),
                 dataType:"json",
                 data: JSON.stringify(perkJson)
             });
