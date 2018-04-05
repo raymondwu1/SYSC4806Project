@@ -15,12 +15,12 @@ $(document).ready(function() {
     /* Get the subscription table in the mainpage. */
     function GetTable() {
 
-        $('#PerksTable').empty();
+        $("#PerksTable").find("tr:gt(0)").remove();
         $.ajax({
             async:false,
             url: cntxPath+"/GetTable?"
         }).then(function(data) {
-            $('#PerksTable').append("<tr><th>Perk Code</th><th>Perk Description</th><th>Expiry Date</th><th></th><th></th><th></th></tr>"+data);
+            $('#PerksTable').append(""+data);
         });
 
     }

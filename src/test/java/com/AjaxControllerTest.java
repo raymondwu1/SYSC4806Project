@@ -38,7 +38,7 @@ public class AjaxControllerTest {
     MockMvc mvc;
 
 
-    private User user;
+    private User user, user2;
     private Perk perk;
     private Subscription sub, sub2;
 
@@ -56,6 +56,7 @@ public class AjaxControllerTest {
     public void init()
     {
         user = new User(username,pass);
+        user2 = new User(username,pass);
         perk = new Perk(namePerk, description);
         perk.setExpiryDate(expiryDate);
         sub = new Subscription(nameSub,fee);
@@ -88,6 +89,24 @@ public class AjaxControllerTest {
         assert(content.contains(sub.getName()));
         assert(content.contains(perk.getCode()));
         assert(content.contains(new SimpleDateFormat("yyyy-MM-dd").format(expiryDate)));
+    }
+
+    /* Test GetCompleteTable method */
+    @Test
+    public void testGetCompleteTable() throws Exception {
+        /* Add perk and subscription to user. */
+        sub2.addPerk(perk);
+        user2.addSubscription(sub2);
+        userService.save(user2);
+        /* Make call. */
+        MvcResult result = mvc.perform(get("/GetCompleteTable")).andExpect(status().isOk()).andReturn();
+        String content = result.getResponse().getContentAsString();
+        /* Verify the table returns the sub and perk name. */
+        assert(content.contains(sub2.getName()));
+        assert(content.contains(perk.getCode()));
+        assert(content.contains(new SimpleDateFormat("yyyy-MM-dd").format(expiryDate)));
+        assert (content.contains("class=\"upvotebutton"));
+        assert (content.contains("class=\"downvotebutton"));
     }
 
     @Test

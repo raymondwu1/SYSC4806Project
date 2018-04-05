@@ -43,15 +43,24 @@ $(document).ready(function() {
 
         /* Get the subscription table in the mainpage. */
         function GetTable() {
-
-                $('#InfoTable').empty();
+            if(!$("#ViewAllSubscriptions")[0].checked) {
+                $("#InfoTable").find("tr:gt(0)").remove();
                 $.ajax({
-                    async:false,
-                    url: cntxPath+"/GetTable?userName="+userName
-                }).then(function(data) {
-                    $('#InfoTable').append("<tr><th>Subscription</th><th>Perk Code</th><th>Perk Description</th><th>Expiry Date</th><th></th><th></th><th></th></tr>"+data);
+                    async: false,
+                    url: cntxPath + "/GetTable?userName=" + userName
+                }).then(function (data) {
+                    $('#InfoTable').append(""+data);
                 });
-
+            }else
+            {
+                $("#InfoTable").find("tr:gt(0)").remove();
+                $.ajax({
+                    async: false,
+                    url: cntxPath + "/GetCompleteTable"
+                }).then(function (data) {
+                    $('#InfoTable').append(""+data);
+                });
+            }
             addUpvoteListener();
             addDownvoteListener();
         }
@@ -272,6 +281,10 @@ $(document).ready(function() {
             warningsVisible = false;
         }
     }
+
+    $("#ViewAllSubscriptions").change(function(){
+        GetTable();
+    });
 
     /* Populate table initially. */
     GetTable();
