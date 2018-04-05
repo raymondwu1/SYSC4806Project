@@ -1,9 +1,11 @@
 $(document).ready(function() {
 
+
     /* Use JQuery to get the page elements.  */
         var subs = $("#sub_perk").get(0);//This should be changed to an ajax call to the db.
         var cntxPath = window.location.protocol+ "//" + window.location.host;
         var userName = $("#userNameLabel").text().replace("username: ","");
+        var searchName = $( "#search_perk" )
 
         var dialog_sub,dialog_perk, form,
 
@@ -25,6 +27,9 @@ $(document).ready(function() {
                 AddDeleteSubscriptionListener();
             }
         });
+
+        //Add event listener for the search button
+        document.getElementById("search").addEventListener("click", searchPerkListener);
 
     /* Make sure they aren't pushing at least 3 chars. */
         function checkLength( o, min ) {
@@ -176,6 +181,19 @@ $(document).ready(function() {
             $(this).parent().remove();
             GetTable();
         });
+    }
+
+    function searchPerkListener(){
+        $('#InfoTable').empty();
+        $.ajax({
+            type:"GET",
+            async:false,
+            url: cntxPath+"/SearchPerk?userName="+userName+"&searchName="+searchName.val(),
+        }).then(function(data) {
+             $('#InfoTable').append("<tr><th>Subscription</th><th>Perk Code</th><th>Perk Description</th><th>Expiry Date</th><th></th><th></th><th></th></tr>"+data);
+        });
+        addUpvoteListener();
+        addDownvoteListener();
     }
 
     /* Set up subscription popup. */

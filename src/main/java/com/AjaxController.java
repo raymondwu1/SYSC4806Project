@@ -103,19 +103,42 @@ public class AjaxController {
         }
     }
 
-    /*
-     * Populate the table with all available perks
-     * @Param: subscription name
-     */
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(method=RequestMethod.GET, value = "/NamePopulation")
-    public String PopulateGivenSubname(@RequestParam String subName){
+    @RequestMapping(method=RequestMethod.GET, value = "/SearchPerk")
+    public String SearchPerk(@RequestParam String userName, @RequestParam String searchName){
         String ret = "";
-        if(subscriptionService.existsByName(subName)){
-            Subscription s = subscriptionService.findByName(subName);
-            for(Perk p : s.getPerks()){
-                ret += "<tr><td id = \"subscription_name\">" + subName + "</td>" + "<td id = \"perk_name\">" + p.getCode() + "</td>"+
-                        "<td>" + p.getDescription() + "</td>"+
+        if (searchName.equals("")){
+            return GetTable(userName);
+        }
+
+        if(subscriptionService.existsByName(searchName)) {
+            Subscription s = subscriptionService.findByName(searchName);
+            for (Perk p : s.getPerks()) {
+                ret += "<tr><td id = \"subscription_name\">" + s.getName() + "</td>" + "<td id = \"perk_name\">" + p.getCode() + "</td>" +
+                        "<td>" + p.getDescription() + "</td>" +
+                        "<td>" + new SimpleDateFormat("yyyy-MM-dd").format(p.getExpiryDate()) + "</td>" +
+                        "<td><button class=\"upvotebutton btn btn-info\">Upvote</button></td>" +
+                        "<td><button class=\"downvotebutton btn btn-danger\">Downvote</button></td>" +
+                        "<td id = \"score_id\">" + p.getScore() + "</td></tr>";
+            }
+        }
+        return ret;
+    }
+
+
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method=RequestMethod.GET, value = "/SearchPerkUnregistered")
+    public String SearchPerkUnregistered(@RequestParam String searchName){
+        String ret = "";
+        if (searchName.equals("")){
+            return HomeTableInitial();
+        }
+
+        if(subscriptionService.existsByName(searchName)) {
+            Subscription s = subscriptionService.findByName(searchName);
+            for (Perk p : s.getPerks()) {
+                ret += "<tr><td id = \"subscription_name\">" + s.getName() + "</td>" + "<td id = \"perk_name\">" + p.getCode() + "</td>" +
+                        "<td>" + p.getDescription() + "</td>" +
                         "<td>" + new SimpleDateFormat("yyyy-MM-dd").format(p.getExpiryDate()) + "</td>" +
                         "<td id = \"score_id\">" + p.getScore() + "</td></tr>";
             }
