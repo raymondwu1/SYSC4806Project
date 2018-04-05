@@ -55,7 +55,6 @@ $(document).ready(function() {
 
             addUpvoteListener();
             addDownvoteListener();
-            sortTable();
         }
 
         /* Add a subscription to the signed in user. */
@@ -158,44 +157,6 @@ $(document).ready(function() {
             /* Update table. */
             GetTable();
         });
-    }
-
-    function sortBySub() {
-        $('#sub_header').click(function (event) {
-            console.log($(event.target).text());
-        });
-    }
-
-    function sortByPerk() {
-        $('#perk_header').click(function (event) {
-            console.log($(event.target).text());
-        });
-    }
-
-    function sortByDesc() {
-        $('#desc_header').click(function (event) {
-            console.log($(event.target).text());
-        });
-    }
-
-    function sortByExp() {
-        $('#exp_header').click(function (event) {
-            console.log($(event.target).text());
-        });
-    }
-
-    function sortByVotes() {
-        $('#votes_header').click(function (event) {
-            console.log($(event.target).text());
-        });
-    }
-
-    function sortTable() {
-        sortBySub();
-        sortByPerk();
-        sortByDesc();
-        sortByExp();
-        sortByVotes();
     }
 
     /* Set up subscription popup. */
