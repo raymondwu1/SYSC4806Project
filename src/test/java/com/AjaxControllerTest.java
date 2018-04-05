@@ -38,15 +38,16 @@ public class AjaxControllerTest {
     MockMvc mvc;
 
 
-    private User user;
+    private User user, user2;
     private Perk perk;
-    private Subscription sub;
+    private Subscription sub, sub2;
 
     private String username = "Test";
     private String pass = "pass";
     private String namePerk = "half off test";
     private String description = "This is a test";
     private String nameSub = "testVisa";
+    private String nameSub2 = "passVisa";
     private String fee = "once a month";
     private java.util.Date expiryDate =  new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime();
 
@@ -55,9 +56,11 @@ public class AjaxControllerTest {
     public void init()
     {
         user = new User(username,pass);
+        user2 = new User(username,pass);
         perk = new Perk(namePerk, description);
         perk.setExpiryDate(expiryDate);
         sub = new Subscription(nameSub,fee);
+        sub2 = new Subscription(nameSub2,fee);
     }
 
     /* Clear objects and remove user from repository. */
@@ -86,6 +89,43 @@ public class AjaxControllerTest {
         assert(content.contains(sub.getName()));
         assert(content.contains(perk.getCode()));
         assert(content.contains(new SimpleDateFormat("yyyy-MM-dd").format(expiryDate)));
+    }
+
+    /* Test GetCompleteTable method */
+    @Test
+    public void testGetCompleteTable() throws Exception {
+        /* Add perk and subscription to user. */
+        sub2.addPerk(perk);
+        user2.addSubscription(sub2);
+        userService.save(user2);
+        /* Make call. */
+        MvcResult result = mvc.perform(get("/GetCompleteTable")).andExpect(status().isOk()).andReturn();
+        String content = result.getResponse().getContentAsString();
+        /* Verify the table returns the sub and perk name. */
+        assert(content.contains(sub2.getName()));
+        assert(content.contains(perk.getCode()));
+        assert(content.contains(new SimpleDateFormat("yyyy-MM-dd").format(expiryDate)));
+        assert (content.contains("class=\"upvotebutton"));
+        assert (content.contains("class=\"downvotebutton"));
+    }
+
+    @Test
+    public void testHomeTableInitial() throws Exception{
+        /* Add perk and subscription to user. */
+        sub2.addPerk(perk);
+        user.addSubscription(sub2);
+        userService.save(user);
+        /* Make call. */
+        MvcResult result = mvc.perform(get("/GeneralPopulation")).andExpect(status().isOk()).andReturn();
+        String content = result.getResponse().getContentAsString();
+        /* Verify the table returns the sub and perk name. */
+        assert(content.contains(sub2.getName()));
+        assert(content.contains(perk.getCode()));
+        assert(content.contains(new SimpleDateFormat("yyyy-MM-dd").format(expiryDate)));
+        assert (!content.contains("class=\"upvotebutton"));
+        assert (!content.contains("class=\"downvotebutton"));
+
+
     }
 
     /* Test AddSubscription method */
@@ -130,6 +170,17 @@ public class AjaxControllerTest {
         /* Verify the table returns the sub and perk name. */
         System.out.print(content);
         assert(content.contains(sub.getName()));
+    }
+
+    /* Test DeleteSub method */
+    @Test
+    public void testDeleteSub() throws Exception {
+        user.addSubscription(sub);
+        userService.save(user);
+        MvcResult result = mvc.perform(delete("/DeleteSub").param("userName", user.getUsername()).param("subName", sub.getName())).andExpect(status().isOk()).andReturn();
+        User temp = userService.findByUsername(user.getUsername());
+        /* Verify the table returns the sub and perk name. */
+        assert(!temp.getSubscriptions().contains(sub));
     }
 
     /* Helper method that converts an object to json. */

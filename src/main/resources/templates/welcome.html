@@ -2,8 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Registration</title>
+    <title>Welcome</title>
     <link id="contextPathHolder" data-contextPath="${pageContext.request.contextPath}"/>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <!-- Optional theme -->
@@ -11,17 +13,42 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" />
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="MainPage.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet"/>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <style>
         label, input { display:block; }
         input.text { margin-bottom:12px; width:95%; padding: .4em; }
         fieldset { padding:0; border:0; margin-top:25px; }
+        input.radio{
+            display:inline;
+        }
+
         a.navbar-brand.title{
             color: blue;
+        }
+        .search-container {
+            float: left;
+            padding: 18px;
+        }
+        .search-container input[type=text]{
+            float: left;
+            padding: 6px;
+            margin-top: 8px;
+            font-size: 17px;
+        }
+        .search-container button {
+            margin-top: 8px;
+            padding: 6px;
+            margin-right: 16px;
+            font-size: 17px;
+            cursor: pointer;
+        }
+        span.btn.btn-danger.delete-button
+        {
+            align:right;
         }
     </style>
 </head>
@@ -48,24 +75,47 @@
 <!-- Bootstrap container class will put a margin around the page. -->
 <div class="container">
     <br/>
-    <div align="right" >
+    <div class="search-container">
+        <input type="text" placeholder="Search for perks..." id="search_perk"/>
+        <button id="search" class="btn btn-primary">Search</button>
+    </div>
+    <div align="right">
+        <div class="checkbox">
+            <label>
+                <input id="ViewAllSubscriptions" type="checkbox" data-toggle="toggle" data-onstyle="success"/>
+                View All Subscriptions
+            </label>
+        </div>
         <button id="AddSubscription" class="btn btn-primary"> Add Subscription </button>
         <button id="AddPerk" class="btn btn-primary"> Add Perk </button>
+        <div class="filter">
+            <form id="formA">
+                <label>
+                Sort By:
+                <input type="radio" id="r1" name="filter" class="radio" value="upvote" > Upvote </input>
+                <input type="radio" id="r2" name="filter" class="radio" value="downvote"> Downvote </input>
+                <input type="radio" id="r3" name="filter" class="radio" value="expiry" checked="checked"> Expiry </input>
+                </label>
+            </form>
+        </div>
     </div>
     <br/>
+    <div class="col-md-3">
+        <ul class="list-group" id="ActiveSubscriptions">
+            <li class="list-group-item list-group-item-info">
+                Active Subscriptions
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-8">
     <table id="InfoTable" align="center" cellpadding="20" class ="table table-hover">
+        <thead class="thead-dark">
+        <tr><th>Subscription</th><th>Perk Code</th><th>Perk Description</th><th>Expiry Date</th><th></th><th></th><th></th></tr>
+        </thead>
         <tbody>
-            <tr>
-                <th>Subscription</th>
-                <th>Perk Code</th>
-                <th>Perk Description</th>
-                <th>Expiry Date</th>
-                <th></th>
-                <th></th>
-                <th>Votes</th>
-            </tr>
         </tbody>
     </table>
+    </div>
     <div id="subscription-form" title="Add Subscription">
         <form>
             <fieldset>

@@ -69,6 +69,32 @@ public class AjaxController {
         return ret;
     }
 
+    /*
+     * Get table rows for a user populated with that users subscription and perk names.
+     * @Param: userName=userName of user
+     * @Ret:HTML rows of that users subscription and perks
+     * */
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method=RequestMethod.GET, value = "/GetCompleteTable")
+    public String GetCompleteTable()
+    {
+        String ret = "";
+        Iterable<Subscription> subs = subscriptionService.findAll();
+
+        /* For all subscriptions get all perks and append table row. */
+        for(Subscription s : subs) {
+            for(Perk p : s.getPerks()) {
+                ret += "<tr><td id = \"subscription_name\">" + s.getName() + "</td>" + "<td id = \"perk_name\">" + p.getCode() + "</td>" +
+                        "<td>" + p.getDescription() + "</td>" +
+                        "<td>" + new SimpleDateFormat("yyyy-MM-dd").format(p.getExpiryDate()) + "</td>" +
+                        "<td><button class=\"upvotebutton btn btn-info\">Upvote</button></td>" +
+                        "<td><button class=\"downvotebutton btn btn-danger\">Downvote</button></td>" +
+                        "<td id = \"score_id\">" + p.getScore() + "</td></tr>";
+            }
+        }
+        return ret;
+    }
+
 
     /*
      * Add subscription to user.
@@ -112,6 +138,65 @@ public class AjaxController {
         }
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method=RequestMethod.GET, value = "/SearchPerk")
+    public String SearchPerk(@RequestParam String userName, @RequestParam String searchName){
+        String ret = "";
+        if (searchName.equals("")){
+            return GetTable(userName);
+        }
+
+        if(subscriptionService.existsByName(searchName)) {
+            Subscription s = subscriptionService.findByName(searchName);
+            for (Perk p : s.getPerks()) {
+                ret += "<tr><td id = \"subscription_name\">" + s.getName() + "</td>" + "<td id = \"perk_name\">" + p.getCode() + "</td>" +
+                        "<td>" + p.getDescription() + "</td>" +
+                        "<td>" + new SimpleDateFormat("yyyy-MM-dd").format(p.getExpiryDate()) + "</td>" +
+                        "<td><button class=\"upvotebutton btn btn-info\">Upvote</button></td>" +
+                        "<td><button class=\"downvotebutton btn btn-danger\">Downvote</button></td>" +
+                        "<td id = \"score_id\">" + p.getScore() + "</td></tr>";
+            }
+        }
+        return ret;
+    }
+
+
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method=RequestMethod.GET, value = "/SearchPerkUnregistered")
+    public String SearchPerkUnregistered(@RequestParam String searchName){
+        String ret = "";
+        if (searchName.equals("")){
+            return HomeTableInitial();
+        }
+
+        if(subscriptionService.existsByName(searchName)) {
+            Subscription s = subscriptionService.findByName(searchName);
+            for (Perk p : s.getPerks()) {
+                ret += "<tr><td id = \"subscription_name\">" + s.getName() + "</td>" + "<td id = \"perk_name\">" + p.getCode() + "</td>" +
+                        "<td>" + p.getDescription() + "</td>" +
+                        "<td>" + new SimpleDateFormat("yyyy-MM-dd").format(p.getExpiryDate()) + "</td>" +
+                        "<td id = \"score_id\">" + p.getScore() + "</td></tr>";
+            }
+        }
+        return ret;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method=RequestMethod.GET, value = "/GeneralPopulation")
+    public String HomeTableInitial(){
+        String ret = "";
+        Iterable<Subscription> subs = subscriptionService.findAll();
+        for(Subscription s : subs) {
+            for (Perk p : s.getPerks()) {
+                ret += "<tr><td id = \"subscription_name\">" + s.getName() + "</td>" + "<td id = \"perk_name\">" + p.getCode() + "</td>" +
+                        "<td>" + p.getDescription() + "</td>" +
+                        "<td>" + new SimpleDateFormat("yyyy-MM-dd").format(p.getExpiryDate()) + "</td>" +
+                        "<td id = \"score_id\">" + p.getScore() + "</td></tr>";
+            }
+        }
+        return ret;
+    }
+
     /*
     * Return a list of subscription names for a user
     * @Param: userName = name of user
@@ -126,5 +211,27 @@ public class AjaxController {
             subs.add(subscription.getName());
         }
         return subs;
+    }
+
+    /*
+     * Delete a subscription for a user
+     * @Param: userName = name of user
+     * @Param: subName = name of subscription
+     * */
+    @RequestMapping(method=RequestMethod.DELETE, value = "/DeleteSub")
+    public void DeleteSub(@RequestParam String userName,@RequestParam String subName)
+    {
+        user = userService.findByUsername(userName);
+        Subscription temp = null;
+        for (Subscription subscription : user.getSubscriptions()) {
+            if(subscription.getName().equals(subName))
+            {
+                temp = subscription;
+            }
+        }
+        if(temp != null) {
+            user.removeSubscription(temp);
+            userService.save(user);
+        }
     }
 }
