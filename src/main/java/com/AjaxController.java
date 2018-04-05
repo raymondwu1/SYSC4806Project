@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -22,15 +22,15 @@ public class AjaxController {
     private SubscriptionService subscriptionService;
 
     User user;
+    List<SubPerkPair> subPerkPairList = new ArrayList<>();
 
-    /**
-    public static final Comparator<Perk> DESCENDING_COMPARATOR = new Comparator<Perk>() {
+
+    public static final Comparator<SubPerkPair> VOTES_COMPARATOR = new Comparator<SubPerkPair>() {
         // Overriding the compare method to sort the age
-        public int compare(Perk p, Perk p1) {
-            return p.getScore()-p1.getScore();
+        public int compare(SubPerkPair sp, SubPerkPair sp1) {
+            return sp1.getPerk().getScore()-sp.getPerk().getScore();
         }
     };
-    **/
 
     /*
      * Get table rows for a user populated with that users subscription and perk names.
@@ -48,14 +48,23 @@ public class AjaxController {
         /* For all subscriptions get all perks and append table row. */
         for(int i = 0; i < subs.size(); i++) {
             for(int n = 0; n < subs.get(i).getPerks().size(); n++) {
-                ret += "<tr><td id = \"subscription_name\">" + subs.get(i).getName() + "</td>" + "<td id = \"perk_name\">" + subs.get(i).getPerks().get(n).getCode() + "</td>"+
-                        "<td>" + subs.get(i).getPerks().get(n).getDescription() + "</td>"+
-                        "<td>" + new SimpleDateFormat("yyyy-MM-dd").format(subs.get(i).getPerks().get(n).getExpiryDate()) + "</td>" +
-                        "<td><button class=\"upvotebutton btn btn-info\">Upvote</button></td>" +
-                        "<td><button class=\"downvotebutton btn btn-danger\">Downvote</button></td>" +
-                        "<td id = \"score_id\">" + subs.get(i).getPerks().get(n).getScore() + "</td></tr>";
+                subPerkPairList.add(new SubPerkPair(subs.get(i), subs.get(i).getPerks().get(n)));
             }
         }
+
+        Collections.sort(subPerkPairList, VOTES_COMPARATOR);
+
+        for (SubPerkPair sp: subPerkPairList) {
+            ret += "<tr><td class=\"class_sub_name\" id = \"subscription_name\">" + sp.getSubscription().getName() + "</td>" +
+                    "<td class=\"class_perk_name\" id = \"perk_name\">" + sp.getPerk().getCode() + "</td>"+
+                    "<td class=\"class_desc_name\">" + sp.getPerk().getDescription() + "</td>"+
+                    "<td class=\"class_date_name\">" + new SimpleDateFormat("yyyy-MM-dd").format(sp.getPerk().getExpiryDate()) + "</td>" +
+                    "<td><button class=\"upvotebutton btn btn-info\">Upvote</button></td>" +
+                    "<td><button class=\"downvotebutton btn btn-danger\">Downvote</button></td>" +
+                    "<td class=\"class_vote_name\" id = \"score_id\">" + sp.getPerk().getScore() + "</td></tr>";
+        }
+
+        subPerkPairList.clear();
 
         return ret;
     }

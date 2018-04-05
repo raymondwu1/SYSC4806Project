@@ -16,6 +16,8 @@ public class Perk {
     private String code;
     private String description;
     private int score;
+    private boolean hasUpvoted = false;
+    private boolean hasDownvoted = false;
     @ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     private Subscription subscription;
     private java.util.Date expiryDate;
@@ -105,10 +107,38 @@ public class Perk {
     }
 
     public void upvote() {
-        this.score++;
+        if (!hasDownvoted && !hasUpvoted){
+            this.score++;
+            hasUpvoted = true;
+        }
+        else if (hasUpvoted){
+            this.score--;
+            hasUpvoted = false;
+            hasDownvoted = false;
+        }
+        else{
+            this.score++;
+            this.score++;
+            hasUpvoted = true;
+            hasDownvoted = false;
+        }
     }
 
     public void downvote() {
-        this.score--;
+        if (!hasDownvoted && !hasUpvoted){
+            this.score--;
+            hasDownvoted = true;
+        }
+        else if (hasDownvoted){
+            this.score++;
+            hasDownvoted = false;
+            hasUpvoted = false;
+        }
+        else{
+            this.score--;
+            this.score--;
+            hasUpvoted = false;
+            hasDownvoted = true;
+        }
     }
 }
