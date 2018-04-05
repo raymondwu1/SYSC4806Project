@@ -5,7 +5,7 @@ $(document).ready(function() {
         var subs = $("#sub_perk").get(0);//This should be changed to an ajax call to the db.
         var cntxPath = window.location.protocol+ "//" + window.location.host;
         var userName = $("#userNameLabel").text().replace("username: ","");
-        var searchName = $( "#search_perk" )
+        var searchName = $( "#search_perk" );
 
         var dialog_sub,dialog_perk, form,
 
@@ -30,6 +30,9 @@ $(document).ready(function() {
 
         //Add event listener for the search button
         document.getElementById("search").addEventListener("click", searchPerkListener);
+        $('#formA input[type=radio]').click(function(){
+           GetTable();
+        });
 
     /* Make sure they aren't pushing at least 3 chars. */
         function checkLength( o, min ) {
@@ -47,7 +50,7 @@ $(document).ready(function() {
                 $("#InfoTable").find("tr:gt(0)").remove();
                 $.ajax({
                     async: false,
-                    url: cntxPath + "/GetTable?userName=" + userName
+                    url: cntxPath + "/GetTable?userName=" + userName,
                 }).then(function (data) {
                     $('#InfoTable').append(""+data);
                 });
@@ -56,13 +59,20 @@ $(document).ready(function() {
                 $("#InfoTable").find("tr:gt(0)").remove();
                 $.ajax({
                     async: false,
-                    url: cntxPath + "/GetCompleteTable"
+                    url: cntxPath + "/GetCompleteTable",
                 }).then(function (data) {
                     $('#InfoTable').append(""+data);
                 });
             }
             addUpvoteListener();
             addDownvoteListener();
+            if (document.getElementById('r1').checked){
+                sortTableUpvotes();
+            }else if (document.getElementById('r2').checked){
+                sortTableDownvotes();
+            }else if(document.getElementById('r3').checked){
+                sortTableDates();
+            }
         }
 
         /* Add a subscription to the signed in user. */
@@ -203,6 +213,113 @@ $(document).ready(function() {
         });
         addUpvoteListener();
         addDownvoteListener();
+    }
+
+    function sortTableDates() {
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.getElementById("InfoTable");
+        switching = true;
+        /*Make a loop that will continue until
+        no switching has been done:*/
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.getElementsByTagName("TR");
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 1; i < (rows.length - 1); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                x = rows[i].getElementsByTagName("TD")[3];
+                y = rows[i + 1].getElementsByTagName("TD")[3];
+                var d1 = Date.parse(x.innerHTML);
+                var d2 = Date.parse(y.innerHTML);
+                //check if the two rows should switch place:
+                if (d1 > d2) {
+                    //if so, mark as a switch and break the loop:
+                    shouldSwitch= true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+    }
+
+    function sortTableUpvotes() {
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.getElementById("InfoTable");
+        switching = true;
+        /*Make a loop that will continue until
+        no switching has been done:*/
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.getElementsByTagName("TR");
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 1; i < (rows.length - 1); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                x = rows[i].getElementsByTagName("TD")[6];
+                y = rows[i + 1].getElementsByTagName("TD")[6];
+                //check if the two rows should switch place:
+                if (parseFloat(x.innerHTML) < parseFloat(y.innerHTML)) {
+                    //if so, mark as a switch and break the loop:
+                    shouldSwitch= true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+    }
+
+    function sortTableDownvotes() {
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.getElementById("InfoTable");
+        switching = true;
+        /*Make a loop that will continue until
+        no switching has been done:*/
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.getElementsByTagName("TR");
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 1; i < (rows.length - 1); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                x = rows[i].getElementsByTagName("TD")[6];
+                y = rows[i + 1].getElementsByTagName("TD")[6];
+                //check if the two rows should switch place:
+                if (parseFloat(x.innerHTML) > parseFloat(y.innerHTML)) {
+                    //if so, mark as a switch and break the loop:
+                    shouldSwitch= true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
     }
 
     /* Set up subscription popup. */
